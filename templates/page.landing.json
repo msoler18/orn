@@ -1,0 +1,24 @@
+{
+  "sections": {
+    "orn_hero_pkqUxB": {
+      "type": "orn-hero",
+      "blocks": {
+        "slide_ErLc5F": {
+          "type": "_orn-hero-slide",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "slide_ErLc5F"
+      ],
+      "settings": {
+        "autoplay_interval": 0,
+        "aria_label": "Hero carousel",
+        "color_scheme": "scheme-3"
+      }
+    }
+  },
+  "order": [
+    "orn_hero_pkqUxB"
+  ]
+}
