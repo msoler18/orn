@@ -52,7 +52,39 @@
         "padding-block-start": 40,
         "padding-block-end": 80
       }
+    },
+    "orn-services": {
+      "type": "orn-services",
+      "blocks": {
+        "tab-1": {
+          "type": "_orn-services-tab",
+          "settings": { "tab_label_desktop": "Consultoría" }
+        },
+        "tab-2": {
+          "type": "_orn-services-tab",
+          "settings": { "tab_label_desktop": "SEO" }
+        },
+        "tab-3": {
+          "type": "_orn-services-tab",
+          "settings": { "tab_label_desktop": "Desarrollo" }
+        },
+        "tab-4": {
+          "type": "_orn-services-tab",
+          "settings": { "tab_label_desktop": "Soporte" }
+        }
+      },
+      "block_order": ["tab-1", "tab-2", "tab-3", "tab-4"],
+      "settings": {
+        "anchor_id": "servicios",
+        "section_title": "Servicios",
+        "section_subtitle": "Un acompañamiento de principio a fin",
+        "cta_text": "Hablemos de tu proyecto",
+        "cta_target": "contact_form",
+        "cta_variant": "primary",
+        "enable_swipe_mobile": "yes",
+        "color_scheme": "scheme-1"
+      }
     }
   },
-  "order": ["main"]
+  "order": ["main", "orn-services"]
 }

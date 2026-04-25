@@ -1,0 +1,293 @@
+{%- liquid
+  assign valid_blocks_count = section.blocks.size
+
+  assign anchor_id = section.settings.anchor_id | handleize
+  if anchor_id == blank
+    assign anchor_id = section.id
+  endif
+
+  assign color_scheme = section.settings.color_scheme | default: 'scheme-1'
+
+  assign enable_swipe = true
+  if section.settings.enable_swipe_mobile == 'no'
+    assign enable_swipe = false
+  endif
+
+  assign cta_resolved_url = section.settings.cta_url
+  if section.settings.cta_target == 'contact_form'
+    assign cta_resolved_url = '#contact'
+  endif
+
+  assign dummy_titles = 'Consultoría y estrategia|SEO y visibilidad|Desarrollo a medida|Soporte continuo' | split: '|'
+  assign dummy_descs  = 'Antes de construir, entendemos tu negocio.|Tu tienda visible donde tus clientes buscan.|Soluciones técnicas que escalan con tu negocio.|Siempre disponibles para mantener tu tienda al día.' | split: '|'
+-%}
+
+{%- if valid_blocks_count > 0 -%}
+  <section
+    id="{{ anchor_id }}"
+    class="orn-services color-{{ color_scheme }} gradient"
+    data-section-id="{{ section.id }}"
+    aria-labelledby="{{ anchor_id }}-title"
+    x-data="ornServices({ total: {{ valid_blocks_count }}, swipeMobile: {{ enable_swipe }} })"
+    x-init="init()"
+  >
+    <div class="orn-services__inner page-width">
+
+      {%- if section.settings.section_title != blank or section.settings.section_subtitle != blank -%}
+        <header class="orn-services__header">
+          {%- if section.settings.section_title != blank -%}
+            <h2 id="{{ anchor_id }}-title" class="orn-services__title">
+              {{ section.settings.section_title }}
+            </h2>
+          {%- endif -%}
+          {%- if section.settings.section_subtitle != blank -%}
+            <p class="orn-services__subtitle">{{ section.settings.section_subtitle }}</p>
+          {%- endif -%}
+        </header>
+      {%- endif -%}
+
+      {%- comment -%} Tablist (buttons) — forloop.index0 is the source of truth for indexing {%- endcomment -%}
+      <div
+        class="orn-services__nav"
+        role="tablist"
+        aria-label="{{ 'Navegación de servicios' | escape }}"
+      >
+        <span class="orn-services__indicator" aria-hidden="true"></span>
+        <span class="orn-services__flash" aria-hidden="true"></span>
+
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign idx = forloop.index0
+            assign pos = forloop.index
+            assign num = pos | prepend: '0'
+            assign tab_label = block.settings.tab_label_desktop | default: num
+          -%}
+          <button
+            type="button"
+            role="tab"
+            id="tab-{{ section.id }}-{{ idx }}"
+            aria-controls="panel-{{ section.id }}-{{ idx }}"
+            aria-label="{{ tab_label | escape }}"
+            :aria-selected="active === {{ idx }} ? 'true' : 'false'"
+            :tabindex="active === {{ idx }} ? 0 : -1"
+            class="orn-services__tab"
+            :class="{ 'is-active': active === {{ idx }} }"
+            x-ref="tab{{ idx }}"
+            @click="goTo({{ idx }})"
+            @keydown="onTabKey($event, {{ idx }})"
+          >
+            <span class="orn-services__tab-number" aria-hidden="true">
+              {%- if block.settings.tab_icon_number != blank -%}
+                {{
+                  block.settings.tab_icon_number
+                  | image_url: width: 48
+                  | image_tag: alt: '', loading: 'lazy'
+                }}
+              {%- else -%}
+                {{ num }}
+              {%- endif -%}
+            </span>
+          </button>
+        {%- endfor -%}
+      </div>
+
+      {%- comment -%} Panels — same forloop scope, so forloop.index0 matches the buttons {%- endcomment -%}
+      <div
+        class="orn-services__panels"
+        @touchstart.passive="onTouchStart($event)"
+        @touchend.passive="onTouchEnd($event)"
+      >
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign idx = forloop.index0
+            assign pos = forloop.index
+            assign d_title = dummy_titles[idx] | default: block.settings.tab_label_desktop | default: 'Servicio'
+            assign d_desc  = dummy_descs[idx]  | default: 'Descripción de ejemplo para este servicio.'
+          -%}
+          <div
+            role="tabpanel"
+            id="panel-{{ section.id }}-{{ idx }}"
+            aria-labelledby="tab-{{ section.id }}-{{ idx }}"
+            class="orn-services__panel"
+            :class="{ 'is-active': active === {{ idx }} }"
+            :aria-hidden="active !== {{ idx }} ? 'true' : 'false'"
+            :inert="active !== {{ idx }}"
+            {{ block.shopify_attributes }}
+          >
+            <div class="orn-services__panel-inner">
+
+              <div class="orn-services__panel-header">
+                <h3 class="orn-services__service-title">{{ d_title }}</h3>
+                <div class="orn-services__service-desc rte"><p>{{ d_desc }}</p></div>
+              </div>
+
+              <div class="orn-services__panel-image-wrap">
+                <div class="orn-services__panel-image orn-services__panel-image--placeholder" aria-hidden="true">
+                  <span class="orn-services__panel-image-num">0{{ pos }}</span>
+                </div>
+              </div>
+
+              <div class="orn-services__items-grid">
+                {%- for i in (1..8) -%}
+                  <div class="orn-services__item">
+                    <div class="orn-services__item-icon" aria-hidden="true">
+                      <span>{{ i }}</span>
+                    </div>
+                    <div class="orn-services__item-body">
+                      <div class="orn-services__item-text rte">
+                        <p>Dummy item {{ i }} — tab {{ pos }}</p>
+                      </div>
+                    </div>
+                  </div>
+                {%- endfor -%}
+              </div>
+
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+
+      {%- if section.settings.cta_text != blank -%}
+        <div class="orn-services__cta-wrap">
+          <a
+            class="ornevo-btn ornevo-btn--{{ section.settings.cta_variant | default: 'primary' }}"
+            href="{{ cta_resolved_url | default: '#' }}"
+            {%- if section.settings.cta_target == 'new' %} target="_blank" rel="noopener noreferrer"{%- endif -%}
+          >
+            {{- section.settings.cta_text -}}
+            {%- if section.settings.cta_icon_svg != blank -%}
+              <span class="ornevo-btn__icon" aria-hidden="true">
+                {{- section.settings.cta_icon_svg | image_url: width: 24 | image_tag: alt: '' -}}
+              </span>
+            {%- endif -%}
+          </a>
+        </div>
+      {%- endif -%}
+
+    </div>
+  </section>
+{%- endif -%}
+
+{% stylesheet %}
+  /* intentionally empty — see assets/orn-services.css for full styles */
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Ornevo services",
+  "class": "orn-services-section",
+  "tag": "div",
+  "blocks": [
+    { "type": "_orn-services-tab" }
+  ],
+  "max_blocks": 4,
+  "enabled_on": {
+    "templates": ["index", "page", "product", "collection", "blog", "article"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Ancla y accesibilidad"
+    },
+    {
+      "type": "text",
+      "id": "anchor_id",
+      "label": "ID de ancla",
+      "info": "Se añade a la URL como #id. Ej: servicios → ornevo.fr#servicios"
+    },
+    {
+      "type": "header",
+      "content": "Encabezado"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "section_title",
+      "label": "Título de la sección",
+      "default": "Servicios"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "section_subtitle",
+      "label": "Subtítulo de la sección",
+      "default": "Un acompañamiento de principio a fin"
+    },
+    {
+      "type": "header",
+      "content": "CTA sección"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Texto del CTA",
+      "default": "Hablemos de tu proyecto"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "URL del CTA"
+    },
+    {
+      "type": "select",
+      "id": "cta_target",
+      "label": "Abrir en",
+      "options": [
+        { "value": "same", "label": "Misma pestaña" },
+        { "value": "new", "label": "Nueva pestaña" },
+        { "value": "contact_form", "label": "Formulario de contacto (#contact)" }
+      ],
+      "default": "same"
+    },
+    {
+      "type": "select",
+      "id": "cta_variant",
+      "label": "Estilo del CTA",
+      "options": [
+        { "value": "primary", "label": "Primary" },
+        { "value": "secondary", "label": "Secondary" },
+        { "value": "tertiary", "label": "Tertiary" }
+      ],
+      "default": "primary"
+    },
+    {
+      "type": "image_picker",
+      "id": "cta_icon_svg",
+      "label": "Icono del CTA (SVG)"
+    },
+    {
+      "type": "header",
+      "content": "Comportamiento"
+    },
+    {
+      "type": "select",
+      "id": "enable_swipe_mobile",
+      "label": "Navegación por swipe en móvil",
+      "options": [
+        { "value": "yes", "label": "Activado" },
+        { "value": "no", "label": "Desactivado" }
+      ],
+      "default": "yes"
+    },
+    {
+      "type": "header",
+      "content": "Apariencia"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Esquema de color",
+      "default": "scheme-1"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ornevo services",
+      "blocks": [
+        { "type": "_orn-services-tab", "settings": { "tab_label_desktop": "Consultoría" } },
+        { "type": "_orn-services-tab", "settings": { "tab_label_desktop": "SEO" } },
+        { "type": "_orn-services-tab", "settings": { "tab_label_desktop": "Desarrollo" } },
+        { "type": "_orn-services-tab", "settings": { "tab_label_desktop": "Soporte" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
