@@ -2,9 +2,15 @@
   assign slide_index = block.shopify_attributes | split: 'data-shopify-block-id="' | last | split: '"' | first
   assign has_video_desktop = false
   assign has_video_mobile  = false
-  assign has_image_desktop = block.settings.image_desktop != blank
-  assign has_image_mobile  = block.settings.image_mobile  != blank
+  assign has_image_desktop = false
+  assign has_image_mobile  = false
 
+  if block.settings.image_desktop != blank
+    assign has_image_desktop = true
+  endif
+  if block.settings.image_mobile != blank
+    assign has_image_mobile = true
+  endif
   if block.settings.youtube_desktop != blank
     assign has_video_desktop = true
   endif
@@ -12,8 +18,14 @@
     assign has_video_mobile = true
   endif
 
-  assign has_title   = block.settings.title != blank
-  assign has_media   = has_video_desktop or has_image_desktop
+  assign has_title = false
+  if block.settings.title != blank
+    assign has_title = true
+  endif
+  assign has_media = false
+  if has_video_desktop or has_image_desktop
+    assign has_media = true
+  endif
   assign render_slide = false
   if has_title and has_media
     assign render_slide = true

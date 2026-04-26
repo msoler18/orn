@@ -5,15 +5,26 @@
  */
 
 .orn-services {
+  /* Defaults — overridable via section settings (inline custom props) */
+  --orn-services-nav-bg: transparent;
+  --orn-services-nav-border: color-mix(in srgb, currentColor 20%, transparent);
   --orn-services-indicator-bg: var(--color-foreground, #0D4F4A);
   --orn-services-active-tab-color: var(--color-background, #ffffff);
+  --orn-services-inactive-tab-color: inherit;
   --orn-services-flash-color: rgba(78, 192, 222, 0.55);
+  --orn-services-item-bullet-bg: color-mix(in srgb, currentColor 8%, transparent);
+  --orn-services-item-icon-color: var(--color-foreground, #0D4F4A);
+  --orn-services-progress-active: currentColor;
+  --orn-services-progress-inactive: color-mix(in srgb, currentColor 30%, transparent);
+
   --orn-services-tab-radius: 999px;
   --orn-services-transition: 0.35s cubic-bezier(0.65, 0.05, 0.35, 1);
   --orn-services-pad-y: clamp(3rem, 6vw, 5rem);
+  --orn-services-pad-x: clamp(1rem, 4vw, 2.5rem);
   --orn-services-content-width: 880px;
 
   padding-block: var(--orn-services-pad-y);
+  padding-inline: var(--orn-services-pad-x);
   scroll-margin-top: var(--header-group-height, 80px);
 }
 
@@ -57,7 +68,8 @@
   align-items: stretch;
   width: 100%;
   max-width: var(--orn-services-content-width);
-  border: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+  background: var(--orn-services-nav-bg);
+  border: 1px solid var(--orn-services-nav-border);
   border-radius: var(--orn-services-tab-radius);
   padding: 4px;
   overflow: hidden;
@@ -121,7 +133,7 @@
   border-radius: calc(var(--orn-services-tab-radius) - 4px);
   background: transparent;
   cursor: pointer;
-  color: inherit;
+  color: var(--orn-services-inactive-tab-color);
   transition: color 0.2s ease;
   -webkit-tap-highlight-color: transparent;
 }
@@ -135,11 +147,19 @@
   outline-offset: 2px;
 }
 
-/* Tab number — always visible (matches wireframe 01/02/03/04) */
+/* Tab label (text — visible on desktop) */
+.orn-services__tab-label {
+  display: block;
+  font-family: var(--font-body--family);
+  font-weight: 600;
+  font-size: clamp(0.9375rem, 1.2vw, 1.0625rem);
+  line-height: 1;
+  letter-spacing: 0.01em;
+}
+
+/* Tab number (visible only on mobile via media query below) */
 .orn-services__tab-number {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: none;
   font-family: var(--font-heading--family);
   font-weight: 700;
   font-size: clamp(1.25rem, 2vw, 1.75rem);
@@ -267,27 +287,22 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: var(--orn-services-indicator-bg);
+  background: var(--orn-services-item-bullet-bg);
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
 }
 
-.orn-services__item-icon img {
+.orn-services__item-icon img,
+.orn-services__item-icon svg {
   display: block;
-  width: 20px;
-  height: 20px;
+  width: 24px !important;
+  height: 24px !important;
+  max-width: 24px;
+  max-height: 24px;
   object-fit: contain;
-  filter: brightness(0) invert(1);
-}
-
-/* Phase 1: dummy numeric icon */
-.orn-services__item-icon span {
-  color: var(--orn-services-active-tab-color);
-  font-family: var(--font-body--family);
-  font-weight: 700;
-  font-size: 0.875rem;
+  color: var(--orn-services-item-icon-color);
 }
 
 .orn-services__item-body {
@@ -315,6 +330,33 @@
 .orn-services__item-cta {
   align-self: flex-start;
   font-size: 0.8125rem;
+}
+
+/* ---------- Mobile swipe progress (pill bars) ---------- */
+/* Matches the orn-hero dot pattern: 28×3 → 64×3, color-mix track + currentColor fill. */
+.orn-services__progress {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding-top: 0.75rem;
+}
+
+.orn-services__progress-pill {
+  display: block;
+  width: 28px;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--orn-services-progress-inactive);
+  transition: width 400ms cubic-bezier(0.22, 1, 0.36, 1),
+              background-color 0.25s ease;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.orn-services__progress-pill.is-active {
+  width: 64px;
+  background: var(--orn-services-progress-active);
 }
 
 /* ---------- Section CTA ---------- */
@@ -372,7 +414,6 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
-
 }
 
 /* ---------- Mobile (< 750px) ---------- */
@@ -380,6 +421,22 @@
   .orn-services__tab {
     padding: 0.625rem 0.5rem;
     min-height: 48px;
+  }
+
+  /* Toggle: hide text label, show number on mobile */
+  .orn-services__tab-label {
+    display: none;
+  }
+
+  .orn-services__tab-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Show pill progress bar only on mobile (when there's >1 tab) */
+  .orn-services__progress {
+    display: flex;
   }
 }
 

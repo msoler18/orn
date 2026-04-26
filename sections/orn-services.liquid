@@ -18,8 +18,35 @@
     assign cta_resolved_url = '#contact'
   endif
 
-  assign dummy_titles = 'Consultoría y estrategia|SEO y visibilidad|Desarrollo a medida|Soporte continuo' | split: '|'
-  assign dummy_descs  = 'Antes de construir, entendemos tu negocio.|Tu tienda visible donde tus clientes buscan.|Soluciones técnicas que escalan con tu negocio.|Siempre disponibles para mantener tu tienda al día.' | split: '|'
+  capture inline_color_vars
+    if section.settings.nav_bg != blank
+      echo '--orn-services-nav-bg:' | append: section.settings.nav_bg | append: ';'
+    endif
+    if section.settings.nav_border != blank
+      echo '--orn-services-nav-border:' | append: section.settings.nav_border | append: ';'
+    endif
+    if section.settings.nav_active_bg != blank
+      echo '--orn-services-indicator-bg:' | append: section.settings.nav_active_bg | append: ';'
+    endif
+    if section.settings.nav_active_text != blank
+      echo '--orn-services-active-tab-color:' | append: section.settings.nav_active_text | append: ';'
+    endif
+    if section.settings.nav_inactive_text != blank
+      echo '--orn-services-inactive-tab-color:' | append: section.settings.nav_inactive_text | append: ';'
+    endif
+    if section.settings.flash_color != blank
+      echo '--orn-services-flash-color:' | append: section.settings.flash_color | append: ';'
+    endif
+    if section.settings.item_bullet_bg != blank
+      echo '--orn-services-item-bullet-bg:' | append: section.settings.item_bullet_bg | append: ';'
+    endif
+    if section.settings.progress_active != blank
+      echo '--orn-services-progress-active:' | append: section.settings.progress_active | append: ';'
+    endif
+    if section.settings.progress_inactive != blank
+      echo '--orn-services-progress-inactive:' | append: section.settings.progress_inactive | append: ';'
+    endif
+  endcapture
 -%}
 
 {%- if valid_blocks_count > 0 -%}
@@ -28,6 +55,7 @@
     class="orn-services color-{{ color_scheme }} gradient"
     data-section-id="{{ section.id }}"
     aria-labelledby="{{ anchor_id }}-title"
+    {% if inline_color_vars != blank %}style="{{ inline_color_vars }}"{% endif %}
     x-data="ornServices({ total: {{ valid_blocks_count }}, swipeMobile: {{ enable_swipe }} })"
     x-init="init()"
   >
@@ -76,6 +104,7 @@
             @click="goTo({{ idx }})"
             @keydown="onTabKey($event, {{ idx }})"
           >
+            <span class="orn-services__tab-label">{{ tab_label }}</span>
             <span class="orn-services__tab-number" aria-hidden="true">
               {%- if block.settings.tab_icon_number != blank -%}
                 {{
@@ -101,8 +130,12 @@
           {%- liquid
             assign idx = forloop.index0
             assign pos = forloop.index
-            assign d_title = dummy_titles[idx] | default: block.settings.tab_label_desktop | default: 'Servicio'
-            assign d_desc  = dummy_descs[idx]  | default: 'Descripción de ejemplo para este servicio.'
+            assign num = pos | prepend: '0'
+
+            assign panel_title = block.settings.panel_title
+            assign panel_description = block.settings.panel_description
+            assign heading_tag = block.settings.panel_heading_level | default: 'h3'
+            assign panel_image = block.settings.panel_image
           -%}
           <div
             role="tabpanel"
@@ -116,34 +149,90 @@
           >
             <div class="orn-services__panel-inner">
 
-              <div class="orn-services__panel-header">
-                <h3 class="orn-services__service-title">{{ d_title }}</h3>
-                <div class="orn-services__service-desc rte"><p>{{ d_desc }}</p></div>
-              </div>
-
-              <div class="orn-services__panel-image-wrap">
-                <div class="orn-services__panel-image orn-services__panel-image--placeholder" aria-hidden="true">
-                  <span class="orn-services__panel-image-num">0{{ pos }}</span>
+              {%- if panel_title != blank or panel_description != blank -%}
+                <div class="orn-services__panel-header">
+                  {%- if panel_title != blank -%}
+                    <{{ heading_tag }} class="orn-services__service-title">{{ panel_title }}</{{ heading_tag }}>
+                  {%- endif -%}
+                  {%- if panel_description != blank -%}
+                    <div class="orn-services__service-desc rte">{{ panel_description }}</div>
+                  {%- endif -%}
                 </div>
-              </div>
+              {%- endif -%}
+
+              {%- if panel_image != blank -%}
+                <div class="orn-services__panel-image-wrap">
+                  {{
+                    panel_image
+                    | image_url: width: 600
+                    | image_tag:
+                      class: 'orn-services__panel-image',
+                      alt: panel_title,
+                      loading: 'lazy',
+                      width: panel_image.width,
+                      height: panel_image.height,
+                      widths: '300, 450, 600',
+                      sizes: '(min-width: 750px) 280px, 90vw'
+                  }}
+                </div>
+              {%- endif -%}
 
               <div class="orn-services__items-grid">
                 {%- for i in (1..8) -%}
-                  <div class="orn-services__item">
-                    <div class="orn-services__item-icon" aria-hidden="true">
-                      <span>{{ i }}</span>
-                    </div>
-                    <div class="orn-services__item-body">
-                      <div class="orn-services__item-text rte">
-                        <p>Dummy item {{ i }} — tab {{ pos }}</p>
+                  {%- liquid
+                    assign txt_key       = 'item_' | append: i | append: '_text'
+                    assign icon_key      = 'item_' | append: i | append: '_icon'
+                    assign cta_text_key  = 'item_' | append: i | append: '_cta_text'
+                    assign cta_url_key   = 'item_' | append: i | append: '_cta_url'
+                    assign cta_tgt_key   = 'item_' | append: i | append: '_cta_target'
+                    assign cta_var_key   = 'item_' | append: i | append: '_cta_variant'
+                    assign cta_icon_key  = 'item_' | append: i | append: '_cta_icon'
+
+                    assign item_text     = block.settings[txt_key]
+                    assign item_icon     = block.settings[icon_key]
+                    assign item_cta_text = block.settings[cta_text_key]
+                    assign item_cta_url  = block.settings[cta_url_key]
+                    assign item_cta_tgt  = block.settings[cta_tgt_key]
+                    assign item_cta_var  = block.settings[cta_var_key] | default: 'tertiary'
+                    assign item_cta_icon = block.settings[cta_icon_key]
+
+                    assign resolved_url = item_cta_url
+                    if item_cta_tgt == 'contact_form'
+                      assign resolved_url = '#contact'
+                    endif
+                  -%}
+
+                  {%- if item_text != blank -%}
+                    <div class="orn-services__item">
+                      {%- if item_icon != blank -%}
+                        <div class="orn-services__item-icon" aria-hidden="true">
+                          <img src="{{ item_icon | image_url: width: 96 }}" alt="" loading="lazy" width="24" height="24" class="orn-services__item-icon-img">
+                        </div>
+                      {%- endif -%}
+                      <div class="orn-services__item-body">
+                        <div class="orn-services__item-text rte">{{ item_text }}</div>
+                        {%- if item_cta_text != blank -%}
+                          <a class="orn-services__item-cta ornevo-btn ornevo-btn--{{ item_cta_var }}" href="{{ resolved_url | default: '#' }}"{% if item_cta_tgt == 'new' %} target="_blank" rel="noopener noreferrer"{% endif %}>{{ item_cta_text }}{%- if item_cta_icon != blank -%}<span class="ornevo-btn__icon" aria-hidden="true">{{ item_cta_icon | image_url: width: 20 | image_tag: alt: '' }}</span>{%- endif -%}</a>
+                        {%- endif -%}
                       </div>
                     </div>
-                  </div>
+                  {%- endif -%}
                 {%- endfor -%}
               </div>
 
             </div>
           </div>
+        {%- endfor -%}
+      </div>
+
+      {%- comment -%} Mobile-only swipe progress (pill bars). Hidden on desktop via CSS. {%- endcomment -%}
+      <div class="orn-services__progress" aria-hidden="true">
+        {%- for block in section.blocks -%}
+          <span
+            class="orn-services__progress-pill"
+            :class="{ 'is-active': active === {{ forloop.index0 }} }"
+            @click="goTo({{ forloop.index0 }})"
+          ></span>
         {%- endfor -%}
       </div>
 
@@ -178,7 +267,288 @@
   "class": "orn-services-section",
   "tag": "div",
   "blocks": [
-    { "type": "_orn-services-tab" }
+    {
+      "type": "tab",
+      "name": "Ornevo services tab",
+      "settings": [
+        { "type": "header", "content": "Tab (navegación)" },
+        {
+          "type": "text",
+          "id": "tab_label_desktop",
+          "label": "Etiqueta accesible",
+          "info": "Texto leído por lectores de pantalla. Visualmente el tab muestra el número (01, 02…)."
+        },
+        {
+          "type": "image_picker",
+          "id": "tab_icon_number",
+          "label": "Icono SVG del número (opcional)",
+          "info": "SVG con 01/02/03/04. Si está vacío se usa el número de posición."
+        },
+
+        { "type": "header", "content": "Panel — encabezado" },
+        {
+          "type": "inline_richtext",
+          "id": "panel_title",
+          "label": "Título del panel",
+          "info": "Ej: Consultoría y estrategia"
+        },
+        {
+          "type": "select",
+          "id": "panel_heading_level",
+          "label": "Nivel de encabezado",
+          "options": [
+            { "value": "h2", "label": "H2" },
+            { "value": "h3", "label": "H3" },
+            { "value": "h4", "label": "H4" }
+          ],
+          "default": "h3"
+        },
+        {
+          "type": "richtext",
+          "id": "panel_description",
+          "label": "Descripción del panel",
+          "info": "Máx 1 línea desktop / 3 líneas móvil (clamp por CSS)."
+        },
+        {
+          "type": "image_picker",
+          "id": "panel_image",
+          "label": "Imagen circular (ratio 1:1)",
+          "info": "Mín. 600×600 px recomendado."
+        },
+
+        { "type": "header", "content": "Servicio 1" },
+        { "type": "image_picker", "id": "item_1_icon", "label": "Icono SVG (1:1)" },
+        { "type": "richtext", "id": "item_1_text", "label": "Texto", "info": "Máx 2 líneas." },
+        { "type": "text", "id": "item_1_cta_text", "label": "CTA · Texto" },
+        { "type": "url", "id": "item_1_cta_url", "label": "CTA · URL" },
+        {
+          "type": "select",
+          "id": "item_1_cta_target",
+          "label": "CTA · Abrir en",
+          "options": [
+            { "value": "same", "label": "Misma pestaña" },
+            { "value": "new", "label": "Nueva pestaña" },
+            { "value": "contact_form", "label": "Formulario de contacto" }
+          ],
+          "default": "same"
+        },
+        {
+          "type": "select",
+          "id": "item_1_cta_variant",
+          "label": "CTA · Estilo",
+          "options": [
+            { "value": "primary", "label": "Primary" },
+            { "value": "secondary", "label": "Secondary" },
+            { "value": "tertiary", "label": "Tertiary" }
+          ],
+          "default": "tertiary"
+        },
+        { "type": "image_picker", "id": "item_1_cta_icon", "label": "CTA · Icono SVG" },
+
+        { "type": "header", "content": "Servicio 2" },
+        { "type": "image_picker", "id": "item_2_icon", "label": "Icono SVG (1:1)" },
+        { "type": "richtext", "id": "item_2_text", "label": "Texto" },
+        { "type": "text", "id": "item_2_cta_text", "label": "CTA · Texto" },
+        { "type": "url", "id": "item_2_cta_url", "label": "CTA · URL" },
+        {
+          "type": "select",
+          "id": "item_2_cta_target",
+          "label": "CTA · Abrir en",
+          "options": [
+            { "value": "same", "label": "Misma pestaña" },
+            { "value": "new", "label": "Nueva pestaña" },
+            { "value": "contact_form", "label": "Formulario de contacto" }
+          ],
+          "default": "same"
+        },
+        {
+          "type": "select",
+          "id": "item_2_cta_variant",
+          "label": "CTA · Estilo",
+          "options": [
+            { "value": "primary", "label": "Primary" },
+            { "value": "secondary", "label": "Secondary" },
+            { "value": "tertiary", "label": "Tertiary" }
+          ],
+          "default": "tertiary"
+        },
+        { "type": "image_picker", "id": "item_2_cta_icon", "label": "CTA · Icono SVG" },
+
+        { "type": "header", "content": "Servicio 3" },
+        { "type": "image_picker", "id": "item_3_icon", "label": "Icono SVG (1:1)" },
+        { "type": "richtext", "id": "item_3_text", "label": "Texto" },
+        { "type": "text", "id": "item_3_cta_text", "label": "CTA · Texto" },
+        { "type": "url", "id": "item_3_cta_url", "label": "CTA · URL" },
+        {
+          "type": "select",
+          "id": "item_3_cta_target",
+          "label": "CTA · Abrir en",
+          "options": [
+            { "value": "same", "label": "Misma pestaña" },
+            { "value": "new", "label": "Nueva pestaña" },
+            { "value": "contact_form", "label": "Formulario de contacto" }
+          ],
+          "default": "same"
+        },
+        {
+          "type": "select",
+          "id": "item_3_cta_variant",
+          "label": "CTA · Estilo",
+          "options": [
+            { "value": "primary", "label": "Primary" },
+            { "value": "secondary", "label": "Secondary" },
+            { "value": "tertiary", "label": "Tertiary" }
+          ],
+          "default": "tertiary"
+        },
+        { "type": "image_picker", "id": "item_3_cta_icon", "label": "CTA · Icono SVG" },
+
+        { "type": "header", "content": "Servicio 4" },
+        { "type": "image_picker", "id": "item_4_icon", "label": "Icono SVG (1:1)" },
+        { "type": "richtext", "id": "item_4_text", "label": "Texto" },
+        { "type": "text", "id": "item_4_cta_text", "label": "CTA · Texto" },
+        { "type": "url", "id": "item_4_cta_url", "label": "CTA · URL" },
+        {
+          "type": "select",
+          "id": "item_4_cta_target",
+          "label": "CTA · Abrir en",
+          "options": [
+            { "value": "same", "label": "Misma pestaña" },
+            { "value": "new", "label": "Nueva pestaña" },
+            { "value": "contact_form", "label": "Formulario de contacto" }
+          ],
+          "default": "same"
+        },
+        {
+          "type": "select",
+          "id": "item_4_cta_variant",
+          "label": "CTA · Estilo",
+          "options": [
+            { "value": "primary", "label": "Primary" },
+            { "value": "secondary", "label": "Secondary" },
+            { "value": "tertiary", "label": "Tertiary" }
+          ],
+          "default": "tertiary"
+        },
+        { "type": "image_picker", "id": "item_4_cta_icon", "label": "CTA · Icono SVG" },
+
+        { "type": "header", "content": "Servicio 5" },
+        { "type": "image_picker", "id": "item_5_icon", "label": "Icono SVG (1:1)" },
+        { "type": "richtext", "id": "item_5_text", "label": "Texto" },
+        { "type": "text", "id": "item_5_cta_text", "label": "CTA · Texto" },
+        { "type": "url", "id": "item_5_cta_url", "label": "CTA · URL" },
+        {
+          "type": "select",
+          "id": "item_5_cta_target",
+          "label": "CTA · Abrir en",
+          "options": [
+            { "value": "same", "label": "Misma pestaña" },
+            { "value": "new", "label": "Nueva pestaña" },
+            { "value": "contact_form", "label": "Formulario de contacto" }
+          ],
+          "default": "same"
+        },
+        {
+          "type": "select",
+          "id": "item_5_cta_variant",
+          "label": "CTA · Estilo",
+          "options": [
+            { "value": "primary", "label": "Primary" },
+            { "value": "secondary", "label": "Secondary" },
+            { "value": "tertiary", "label": "Tertiary" }
+          ],
+          "default": "tertiary"
+        },
+        { "type": "image_picker", "id": "item_5_cta_icon", "label": "CTA · Icono SVG" },
+
+        { "type": "header", "content": "Servicio 6" },
+        { "type": "image_picker", "id": "item_6_icon", "label": "Icono SVG (1:1)" },
+        { "type": "richtext", "id": "item_6_text", "label": "Texto" },
+        { "type": "text", "id": "item_6_cta_text", "label": "CTA · Texto" },
+        { "type": "url", "id": "item_6_cta_url", "label": "CTA · URL" },
+        {
+          "type": "select",
+          "id": "item_6_cta_target",
+          "label": "CTA · Abrir en",
+          "options": [
+            { "value": "same", "label": "Misma pestaña" },
+            { "value": "new", "label": "Nueva pestaña" },
+            { "value": "contact_form", "label": "Formulario de contacto" }
+          ],
+          "default": "same"
+        },
+        {
+          "type": "select",
+          "id": "item_6_cta_variant",
+          "label": "CTA · Estilo",
+          "options": [
+            { "value": "primary", "label": "Primary" },
+            { "value": "secondary", "label": "Secondary" },
+            { "value": "tertiary", "label": "Tertiary" }
+          ],
+          "default": "tertiary"
+        },
+        { "type": "image_picker", "id": "item_6_cta_icon", "label": "CTA · Icono SVG" },
+
+        { "type": "header", "content": "Servicio 7" },
+        { "type": "image_picker", "id": "item_7_icon", "label": "Icono SVG (1:1)" },
+        { "type": "richtext", "id": "item_7_text", "label": "Texto" },
+        { "type": "text", "id": "item_7_cta_text", "label": "CTA · Texto" },
+        { "type": "url", "id": "item_7_cta_url", "label": "CTA · URL" },
+        {
+          "type": "select",
+          "id": "item_7_cta_target",
+          "label": "CTA · Abrir en",
+          "options": [
+            { "value": "same", "label": "Misma pestaña" },
+            { "value": "new", "label": "Nueva pestaña" },
+            { "value": "contact_form", "label": "Formulario de contacto" }
+          ],
+          "default": "same"
+        },
+        {
+          "type": "select",
+          "id": "item_7_cta_variant",
+          "label": "CTA · Estilo",
+          "options": [
+            { "value": "primary", "label": "Primary" },
+            { "value": "secondary", "label": "Secondary" },
+            { "value": "tertiary", "label": "Tertiary" }
+          ],
+          "default": "tertiary"
+        },
+        { "type": "image_picker", "id": "item_7_cta_icon", "label": "CTA · Icono SVG" },
+
+        { "type": "header", "content": "Servicio 8" },
+        { "type": "image_picker", "id": "item_8_icon", "label": "Icono SVG (1:1)" },
+        { "type": "richtext", "id": "item_8_text", "label": "Texto" },
+        { "type": "text", "id": "item_8_cta_text", "label": "CTA · Texto" },
+        { "type": "url", "id": "item_8_cta_url", "label": "CTA · URL" },
+        {
+          "type": "select",
+          "id": "item_8_cta_target",
+          "label": "CTA · Abrir en",
+          "options": [
+            { "value": "same", "label": "Misma pestaña" },
+            { "value": "new", "label": "Nueva pestaña" },
+            { "value": "contact_form", "label": "Formulario de contacto" }
+          ],
+          "default": "same"
+        },
+        {
+          "type": "select",
+          "id": "item_8_cta_variant",
+          "label": "CTA · Estilo",
+          "options": [
+            { "value": "primary", "label": "Primary" },
+            { "value": "secondary", "label": "Secondary" },
+            { "value": "tertiary", "label": "Tertiary" }
+          ],
+          "default": "tertiary"
+        },
+        { "type": "image_picker", "id": "item_8_cta_icon", "label": "CTA · Icono SVG" }
+      ]
+    }
   ],
   "max_blocks": 4,
   "enabled_on": {
@@ -276,16 +646,70 @@
       "id": "color_scheme",
       "label": "Esquema de color",
       "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Colores · Navegación de tabs"
+    },
+    {
+      "type": "color",
+      "id": "nav_bg",
+      "label": "Fondo del nav",
+      "info": "Vacío = transparente."
+    },
+    {
+      "type": "color",
+      "id": "nav_border",
+      "label": "Borde del nav"
+    },
+    {
+      "type": "color",
+      "id": "nav_active_bg",
+      "label": "Fondo de la píldora activa"
+    },
+    {
+      "type": "color",
+      "id": "nav_active_text",
+      "label": "Texto del tab activo"
+    },
+    {
+      "type": "color",
+      "id": "nav_inactive_text",
+      "label": "Texto de los tabs inactivos"
+    },
+    {
+      "type": "color",
+      "id": "flash_color",
+      "label": "Color del destello (flash)"
+    },
+    {
+      "type": "header",
+      "content": "Colores · Items y progress"
+    },
+    {
+      "type": "color",
+      "id": "item_bullet_bg",
+      "label": "Fondo del círculo del icono (items)"
+    },
+    {
+      "type": "color",
+      "id": "progress_active",
+      "label": "Indicador de swipe · activo"
+    },
+    {
+      "type": "color",
+      "id": "progress_inactive",
+      "label": "Indicador de swipe · inactivo"
     }
   ],
   "presets": [
     {
       "name": "Ornevo services",
       "blocks": [
-        { "type": "_orn-services-tab", "settings": { "tab_label_desktop": "Consultoría" } },
-        { "type": "_orn-services-tab", "settings": { "tab_label_desktop": "SEO" } },
-        { "type": "_orn-services-tab", "settings": { "tab_label_desktop": "Desarrollo" } },
-        { "type": "_orn-services-tab", "settings": { "tab_label_desktop": "Soporte" } }
+        { "type": "tab", "settings": { "tab_label_desktop": "Consultoría" } },
+        { "type": "tab", "settings": { "tab_label_desktop": "SEO" } },
+        { "type": "tab", "settings": { "tab_label_desktop": "Desarrollo" } },
+        { "type": "tab", "settings": { "tab_label_desktop": "Soporte" } }
       ]
     }
   ]
