@@ -31,7 +31,7 @@
 -%}
 
 <div
-  class="orn-header-wrapper color-{{ section.settings.color_scheme }}"
+  class="orn-header-wrapper"
   {% if section.settings.enable_sticky %}data-sticky="true"{% endif %}
   data-orn-header-root
   style="
@@ -48,7 +48,7 @@
     x-init="init()"
     aria-label="Cabecera del sitio"
   >
-    <div class="orn-header__shell {{ shadow_class }}">
+    <div class="orn-header__shell color-{{ section.settings.color_scheme }} {{ shadow_class }}">
 
       <a
         class="orn-header__logo"

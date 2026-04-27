@@ -19,6 +19,18 @@
   z-index: 100;
 }
 
+/* Desktop: header floats over content (out of flow). Sections render from scroll 0
+   so the hero (and any section below) sits visually behind the floating pill. */
+@media (min-width: 750px) {
+  #header-group:has(.orn-header-wrapper[data-sticky='true']) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+  }
+}
+
 .orn-header {
   display: flex;
   justify-content: center;
