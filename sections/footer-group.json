@@ -42,7 +42,7 @@
       "name": "t:names.footer",
       "settings": {
         "cta_band_show": true,
-        "cta_band_color_scheme": "scheme-1",
+        "cta_band_color_scheme": "scheme-5",
         "cta_band_heading": "<p>Lorem ipsum dolor sit amet,<br/>consectetur adipiscing elit</p>",
         "cta_band_subtitle": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>",
         "cta_band_button_text": "Lorem ipsum",
