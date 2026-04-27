@@ -56,7 +56,6 @@
         "card_radius": 32,
         "card_inset": 24,
         "card_padding": 48,
-        "logo": "shopify://shop_images/Capa_1.svg",
         "logo_height": 24,
         "logo_alt": "Ornevo",
         "contact_label": "Contacto",
