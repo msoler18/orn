@@ -1,0 +1,260 @@
+/* ──────────────────────────────────────────────────────────────
+   orn-footer — Ornevo footer (CTA band + floating card)
+   See ADR-0005.
+   Root element is .orn-footer (a <div>); the outer <footer>
+   landmark is provided by layout/theme.liquid wrapping the
+   footer-group. Avoid nested <footer> landmarks.
+   ────────────────────────────────────────────────────────────── */
+
+.orn-footer { display: block; }
+
+/* ── CTA band ─────────────────────────────────────────────── */
+.orn-footer__band {
+  padding-block: var(--orn-footer-band-pt, 96px) var(--orn-footer-band-pb, 96px);
+  padding-inline: var(--page-margin, 24px);
+  text-align: center;
+}
+.orn-footer__band-inner {
+  max-width: 760px;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+.orn-footer__band-heading {
+  font-family: var(--font-heading--family);
+  font-weight: 700;
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  line-height: 1.15;
+}
+.orn-footer__band-heading p,
+.orn-footer__band-subtitle p { margin: 0; }
+.orn-footer__band-subtitle {
+  font-family: var(--font-body--family);
+  font-size: 1rem;
+  opacity: .85;
+  max-width: 640px;
+}
+.orn-footer__band-cta { white-space: nowrap; }
+
+/* ── Card wrap (frame around the card; takes band bg color) ── */
+.orn-footer__card-wrap {
+  padding-inline: var(--orn-footer-card-inset, 24px);
+  padding-block-end: var(--orn-footer-card-inset, 24px);
+  background: var(--orn-footer-band-bg, transparent);
+}
+
+/* ── Card ─────────────────────────────────────────────────── */
+.orn-footer__card {
+  border-radius: var(--orn-footer-card-radius, 32px);
+  padding: var(--orn-footer-card-padding, 48px);
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  max-width: 1320px;
+  margin-inline: auto;
+}
+
+/* ── Top row (split layout) ───────────────────────────────── */
+.orn-footer__card-top {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+}
+@media (min-width: 750px) {
+  .orn-footer__card--align-split .orn-footer__card-top {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+    align-items: start;
+  }
+}
+
+.orn-footer__brand {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: flex-start;
+}
+.orn-footer__logo { display: inline-block; }
+.orn-footer__contact-label {
+  font-weight: 600;
+  margin: 0 0 4px;
+}
+.orn-footer__contact-email {
+  color: inherit;
+  text-decoration: none;
+}
+.orn-footer__contact-email:hover { text-decoration: underline; }
+
+.orn-footer__social {
+  display: flex;
+  gap: 12px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.orn-footer__social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid currentColor;
+  border-radius: 8px;
+  color: inherit;
+  transition: background-color .2s ease, color .2s ease;
+}
+.orn-footer__social-link:hover {
+  background-color: currentColor;
+  color: var(--color-background);
+}
+
+/* ── Tagline + pill ───────────────────────────────────────── */
+.orn-footer__tagline {
+  font-family: var(--font-heading--family);
+  font-weight: 700;
+  font-size: clamp(1.5rem, 2.6vw, 2.5rem);
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+.orn-footer__tagline-lead p { margin: 0; display: inline; }
+.orn-footer__tagline--right { text-align: right; }
+.orn-footer__tagline--center { text-align: center; }
+.orn-footer__tagline--left { text-align: left; }
+
+.orn-footer__pill {
+  display: inline-block;
+  padding: .15em .6em;
+  margin-inline-start: .25em;
+  border-radius: 999px;
+  background: var(--orn-footer-pill-bg, #0F1720);
+  color: var(--orn-footer-pill-fg, #FFFFFF);
+  transform: rotate(var(--orn-footer-pill-rotation, -3deg));
+  transform-origin: center;
+  transition: transform .35s var(--ease-out-cubic, cubic-bezier(.65,.05,.35,1)),
+              opacity .35s var(--ease-out-cubic, cubic-bezier(.65,.05,.35,1));
+}
+.orn-footer__pill--animate {
+  transform: rotate(0deg) scale(.9);
+  opacity: 0;
+}
+.orn-footer__tagline.is-revealed .orn-footer__pill--animate {
+  transform: rotate(var(--orn-footer-pill-rotation, -3deg)) scale(1);
+  opacity: 1;
+}
+
+/* ── Bottom row ───────────────────────────────────────────── */
+.orn-footer__card-bottom {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  border-top: 1px solid rgb(var(--color-foreground-rgb) / .12);
+  padding-top: 24px;
+}
+@media (min-width: 750px) {
+  .orn-footer__card-bottom--align-split {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    align-items: start;
+  }
+}
+
+.orn-footer__legal {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  font-size: .875rem;
+}
+.orn-footer__legal-sep { opacity: .35; }
+.orn-footer__legal-link {
+  color: inherit;
+  text-decoration: none;
+}
+.orn-footer__legal-link:hover { text-decoration: underline; }
+
+/* ── Menus (link groups) ──────────────────────────────────── */
+.orn-footer__menus {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+@media (min-width: 750px) {
+  .orn-footer__menus {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    justify-items: end;
+  }
+  .orn-footer__menus:has(> nav:nth-child(3)) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .orn-footer__menus:has(> nav:nth-child(4)) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.orn-footer__menu {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.orn-footer__menu-title {
+  font-size: .875rem;
+  font-weight: 600;
+  opacity: .7;
+  margin: 0 0 4px;
+}
+.orn-footer__menu-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.orn-footer__menu-link {
+  color: inherit;
+  text-decoration: none;
+  font-size: .9375rem;
+}
+.orn-footer__menu-link:hover { text-decoration: underline; }
+
+/* ── Mobile ───────────────────────────────────────────────── */
+@media (max-width: 749px) {
+  .orn-footer__band {
+    padding-block: clamp(48px, 12vw, 96px);
+  }
+  .orn-footer__card { padding: 32px 24px; gap: 32px; }
+  .orn-footer__card-top,
+  .orn-footer__card-bottom {
+    grid-template-columns: 1fr !important;
+    text-align: center;
+  }
+  .orn-footer__brand { align-items: center; }
+  .orn-footer__social { justify-content: center; }
+  .orn-footer__tagline--right,
+  .orn-footer__tagline--left { text-align: center; }
+  .orn-footer__legal { justify-content: center; }
+  .orn-footer__menus {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    justify-items: center;
+  }
+  .orn-footer__menus:has(> nav:nth-child(3)),
+  .orn-footer__menus:has(> nav:nth-child(4)) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orn-footer__pill--animate {
+    transition: none;
+    transform: rotate(var(--orn-footer-pill-rotation, -3deg));
+    opacity: 1;
+  }
+  .orn-footer__social-link { transition: none; }
+}
+
+/* ── Focus visible ────────────────────────────────────────── */
+.orn-footer a:focus-visible {
+  outline: 2px solid #4ec0de;
+  outline-offset: 3px;
+  border-radius: 6px;
+}

@@ -1,0 +1,506 @@
+{%- liquid
+  assign year = 'now' | date: '%Y'
+  assign copyright = section.settings.copyright_text | replace: '{year}', year
+
+  assign anchor = section.settings.cta_band_button_anchor | default: '#contacto'
+  assign first_char = anchor | slice: 0, 1
+  assign is_anchor = false
+  if first_char == '#'
+    assign is_anchor = true
+  endif
+
+  assign card_classes = 'orn-footer__card color-' | append: section.settings.card_color_scheme
+  assign band_classes = 'orn-footer__band color-' | append: section.settings.cta_band_color_scheme
+-%}
+
+{%- comment -%}
+  Root is <div> (not <footer>) — the outer <footer> landmark comes from
+  layout/theme.liquid wrapping {% sections 'footer-group' %}. See
+  ADR-0005 §"Risks and mitigations".
+{%- endcomment -%}
+<div
+  class="orn-footer"
+  x-data="ornFooter()"
+  x-init="init()"
+  style="
+    --orn-footer-card-radius: {{ section.settings.card_radius }}px;
+    --orn-footer-card-inset: {{ section.settings.card_inset }}px;
+    --orn-footer-card-padding: {{ section.settings.card_padding }}px;
+    --orn-footer-pill-bg: {{ section.settings.tagline_pill_bg }};
+    --orn-footer-pill-fg: {{ section.settings.tagline_pill_fg }};
+    --orn-footer-pill-rotation: {{ section.settings.tagline_pill_rotation }}deg;
+    --orn-footer-band-pt: {{ section.settings.cta_band_padding_block_start }}px;
+    --orn-footer-band-pb: {{ section.settings.cta_band_padding_block_end }}px;
+    --orn-footer-band-bg: rgba({{ section.settings.cta_band_color_scheme.settings.background.rgba }});
+  "
+>
+  {%- if section.settings.cta_band_show -%}
+    <div class="{{ band_classes }}">
+      <div class="orn-footer__band-inner">
+        {%- if section.settings.cta_band_heading != blank -%}
+          <div class="orn-footer__band-heading">{{ section.settings.cta_band_heading }}</div>
+        {%- endif -%}
+        {%- if section.settings.cta_band_subtitle != blank -%}
+          <div class="orn-footer__band-subtitle">{{ section.settings.cta_band_subtitle }}</div>
+        {%- endif -%}
+        {%- if section.settings.cta_band_button_text != blank -%}
+          <a
+            class="orn-footer__band-cta ornevo-btn ornevo-btn--{{ section.settings.cta_band_button_variant }}"
+            href="{{ anchor }}"
+            {% if is_anchor %}data-orn-anchor="true"{% endif %}
+            {% if section.settings.cta_band_button_open_in_new_tab and is_anchor == false %}target="_blank" rel="noopener"{% endif %}
+          >
+            {{ section.settings.cta_band_button_text }}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- if section.settings.card_show -%}
+    <div class="orn-footer__card-wrap">
+      <div class="{{ card_classes }} orn-footer__card--align-{{ section.settings.card_top_align }}">
+
+        {%- comment -%} ── Top: brand / contact / social ── tagline ── {%- endcomment -%}
+        <div class="orn-footer__card-top">
+
+          <div class="orn-footer__brand">
+            {%- if section.settings.logo != blank -%}
+              <a href="{{ routes.root_url }}" class="orn-footer__logo" aria-label="{{ section.settings.logo_alt | default: shop.name | escape }}">
+                {{
+                  section.settings.logo
+                  | image_url: width: 400
+                  | image_tag:
+                    alt: section.settings.logo_alt,
+                    loading: 'lazy',
+                    style: 'height:' | append: section.settings.logo_height | append: 'px;width:auto;'
+                }}
+              </a>
+            {%- endif -%}
+
+            {%- if section.settings.contact_email != blank -%}
+              <div class="orn-footer__contact">
+                {%- if section.settings.contact_label != blank -%}
+                  <p class="orn-footer__contact-label">{{ section.settings.contact_label }}</p>
+                {%- endif -%}
+                <a class="orn-footer__contact-email" href="mailto:{{ section.settings.contact_email }}">
+                  {{ section.settings.contact_email }}
+                </a>
+              </div>
+            {%- endif -%}
+
+            <ul class="orn-footer__social" role="list" aria-label="Redes sociales">
+              {%- assign networks = 'instagram,linkedin,facebook,twitter,youtube,tiktok' | split: ',' -%}
+              {%- for entry in networks -%}
+                {%- assign url_key = 'social_' | append: entry | append: '_url' -%}
+                {%- assign url = section.settings[url_key] -%}
+                {%- if url != blank -%}
+                  <li>
+                    {%- render 'orn-footer-social-icon', network: entry, url: url -%}
+                  </li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+          </div>
+
+          {%- if section.settings.tagline_show -%}
+            <div
+              class="orn-footer__tagline orn-footer__tagline--{{ section.settings.tagline_alignment }}"
+              :class="{ 'is-revealed': pillRevealed }"
+            >
+              {%- if section.settings.tagline_lead != blank -%}
+                <span class="orn-footer__tagline-lead">{{ section.settings.tagline_lead }}</span>
+              {%- endif -%}
+              {%- if section.settings.tagline_pill_text != blank -%}
+                <span
+                  class="orn-footer__pill {% if section.settings.tagline_pill_animate %}orn-footer__pill--animate{% endif %}"
+                  x-ref="pill"
+                >
+                  {{ section.settings.tagline_pill_text }}
+                </span>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+
+        </div>
+
+        {%- comment -%} ── Bottom: legal / copyright ── link groups ── {%- endcomment -%}
+        <div class="orn-footer__card-bottom orn-footer__card-bottom--align-{{ section.settings.card_bottom_align }}">
+
+          <div class="orn-footer__legal">
+            {%- if copyright != blank -%}
+              <span class="orn-footer__copyright">{{ copyright }}</span>
+            {%- endif -%}
+            {%- for n in (1..3) -%}
+              {%- assign t_key = 'legal_link_' | append: n | append: '_text' -%}
+              {%- assign u_key = 'legal_link_' | append: n | append: '_url' -%}
+              {%- assign t = section.settings[t_key] -%}
+              {%- assign u = section.settings[u_key] -%}
+              {%- if t != blank and u != blank -%}
+                <span class="orn-footer__legal-sep" aria-hidden="true">|</span>
+                <a class="orn-footer__legal-link" href="{{ u }}">{{ t }}</a>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+
+          <div class="orn-footer__menus">
+            {% content_for 'blocks' %}
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Footer Ornevo",
+  "tag": "div",
+  "class": "orn-footer-section",
+  "enabled_on": {
+    "groups": ["footer"]
+  },
+  "max_blocks": 4,
+  "blocks": [
+    { "type": "_orn-footer-link-group" }
+  ],
+  "settings": [
+    {
+      "type": "header",
+      "content": "CTA band (banda superior oscura)"
+    },
+    {
+      "type": "checkbox",
+      "id": "cta_band_show",
+      "label": "Mostrar CTA band",
+      "default": true
+    },
+    {
+      "type": "color_scheme",
+      "id": "cta_band_color_scheme",
+      "label": "Color scheme del band",
+      "default": "scheme-4"
+    },
+    {
+      "type": "richtext",
+      "id": "cta_band_heading",
+      "label": "Heading",
+      "default": "<p>Lorem ipsum dolor sit amet,<br>consectetur adipiscing elit</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "cta_band_subtitle",
+      "label": "Subtítulo",
+      "default": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>"
+    },
+    {
+      "type": "text",
+      "id": "cta_band_button_text",
+      "label": "Texto del botón",
+      "default": "Lorem ipsum"
+    },
+    {
+      "type": "text",
+      "id": "cta_band_button_anchor",
+      "label": "Anchor / URL del botón",
+      "default": "#contacto",
+      "info": "Hash (#contacto) o URL absoluta. Si empieza por #, hace smooth scroll."
+    },
+    {
+      "type": "select",
+      "id": "cta_band_button_variant",
+      "label": "Estilo del botón",
+      "options": [
+        { "value": "primary", "label": "Primary" },
+        { "value": "secondary", "label": "Secondary" },
+        { "value": "tertiary", "label": "Tertiary" }
+      ],
+      "default": "secondary"
+    },
+    {
+      "type": "checkbox",
+      "id": "cta_band_button_open_in_new_tab",
+      "label": "Abrir en nueva pestaña (solo URLs)",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "cta_band_padding_block_start",
+      "label": "Padding superior",
+      "min": 24,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 96
+    },
+    {
+      "type": "range",
+      "id": "cta_band_padding_block_end",
+      "label": "Padding inferior",
+      "min": 24,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 96
+    },
+
+    {
+      "type": "header",
+      "content": "Card (zona inferior clara)"
+    },
+    {
+      "type": "checkbox",
+      "id": "card_show",
+      "label": "Mostrar card",
+      "default": true
+    },
+    {
+      "type": "color_scheme",
+      "id": "card_color_scheme",
+      "label": "Color scheme de la card",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "card_inset",
+      "label": "Margen lateral (frame)",
+      "min": 0,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "card_padding",
+      "label": "Padding interno",
+      "min": 24,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+
+    {
+      "type": "header",
+      "content": "Marca y contacto"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "label": "Altura del logo",
+      "min": 24,
+      "max": 96,
+      "step": 2,
+      "unit": "px",
+      "default": 52
+    },
+    {
+      "type": "text",
+      "id": "logo_alt",
+      "label": "Alt text del logo",
+      "default": "Ornevo"
+    },
+    {
+      "type": "text",
+      "id": "contact_label",
+      "label": "Etiqueta del contacto",
+      "default": "Contacto"
+    },
+    {
+      "type": "text",
+      "id": "contact_email",
+      "label": "Email de contacto",
+      "default": "contact@ornevo.fr"
+    },
+
+    {
+      "type": "header",
+      "content": "Redes sociales (URLs vacías = ocultas)"
+    },
+    { "type": "url", "id": "social_instagram_url", "label": "Instagram URL" },
+    { "type": "url", "id": "social_linkedin_url",  "label": "LinkedIn URL" },
+    { "type": "url", "id": "social_facebook_url",  "label": "Facebook URL" },
+    { "type": "url", "id": "social_twitter_url",   "label": "X (Twitter) URL" },
+    { "type": "url", "id": "social_youtube_url",   "label": "YouTube URL" },
+    { "type": "url", "id": "social_tiktok_url",    "label": "TikTok URL" },
+
+    {
+      "type": "header",
+      "content": "Tagline + pill rotada"
+    },
+    {
+      "type": "checkbox",
+      "id": "tagline_show",
+      "label": "Mostrar tagline",
+      "default": true
+    },
+    {
+      "type": "richtext",
+      "id": "tagline_lead",
+      "label": "Texto previo a la pill",
+      "default": "<p>Agencia digital en Normandía — web, marketing y e-commerce para</p>"
+    },
+    {
+      "type": "text",
+      "id": "tagline_pill_text",
+      "label": "Texto de la pill",
+      "default": "PYMES ambiciosas."
+    },
+    {
+      "type": "color",
+      "id": "tagline_pill_bg",
+      "label": "Fondo de la pill",
+      "default": "#0F1720"
+    },
+    {
+      "type": "color",
+      "id": "tagline_pill_fg",
+      "label": "Texto de la pill",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "tagline_pill_rotation",
+      "label": "Rotación de la pill",
+      "min": -10,
+      "max": 10,
+      "step": 1,
+      "unit": "deg",
+      "default": -3
+    },
+    {
+      "type": "checkbox",
+      "id": "tagline_pill_animate",
+      "label": "Animar entrada de la pill",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "tagline_alignment",
+      "label": "Alineación del tagline",
+      "options": [
+        { "value": "left", "label": "Izquierda" },
+        { "value": "center", "label": "Centrado" },
+        { "value": "right", "label": "Derecha" }
+      ],
+      "default": "right"
+    },
+
+    {
+      "type": "header",
+      "content": "Bottom row"
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright",
+      "default": "© {year} Ornevo",
+      "info": "Usa {year} para que se sustituya por el año actual."
+    },
+    { "type": "text", "id": "legal_link_1_text", "label": "Legal 1 — texto", "default": "Aviso legal" },
+    { "type": "url",  "id": "legal_link_1_url",  "label": "Legal 1 — URL" },
+    { "type": "text", "id": "legal_link_2_text", "label": "Legal 2 — texto", "default": "Política de privacidad" },
+    { "type": "url",  "id": "legal_link_2_url",  "label": "Legal 2 — URL" },
+    { "type": "text", "id": "legal_link_3_text", "label": "Legal 3 — texto" },
+    { "type": "url",  "id": "legal_link_3_url",  "label": "Legal 3 — URL" },
+
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "card_top_align",
+      "label": "Layout fila superior",
+      "options": [
+        { "value": "split", "label": "Split (2 columnas)" },
+        { "value": "stack", "label": "Stack (apilado)" }
+      ],
+      "default": "split"
+    },
+    {
+      "type": "select",
+      "id": "card_bottom_align",
+      "label": "Layout fila inferior",
+      "options": [
+        { "value": "split", "label": "Split (2 columnas)" },
+        { "value": "stack", "label": "Stack (apilado)" }
+      ],
+      "default": "split"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer Ornevo",
+      "settings": {
+        "cta_band_show": true,
+        "cta_band_color_scheme": "scheme-4",
+        "cta_band_heading": "<p>Lorem ipsum dolor sit amet,<br>consectetur adipiscing elit</p>",
+        "cta_band_subtitle": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>",
+        "cta_band_button_text": "Lorem ipsum",
+        "cta_band_button_anchor": "#contacto",
+        "cta_band_button_variant": "secondary",
+        "cta_band_button_open_in_new_tab": false,
+        "cta_band_padding_block_start": 96,
+        "cta_band_padding_block_end": 96,
+        "card_show": true,
+        "card_color_scheme": "scheme-1",
+        "card_radius": 32,
+        "card_inset": 24,
+        "card_padding": 48,
+        "logo_height": 52,
+        "logo_alt": "Ornevo",
+        "contact_label": "Contacto",
+        "contact_email": "contact@ornevo.fr",
+        "tagline_show": true,
+        "tagline_lead": "<p>Agencia digital en Normandía — web, marketing y e-commerce para</p>",
+        "tagline_pill_text": "PYMES ambiciosas.",
+        "tagline_pill_bg": "#0F1720",
+        "tagline_pill_fg": "#FFFFFF",
+        "tagline_pill_rotation": -3,
+        "tagline_pill_animate": true,
+        "tagline_alignment": "right",
+        "copyright_text": "© {year} Ornevo",
+        "legal_link_1_text": "Aviso legal",
+        "legal_link_2_text": "Política de privacidad",
+        "card_top_align": "split",
+        "card_bottom_align": "split"
+      },
+      "blocks": [
+        {
+          "type": "_orn-footer-link-group",
+          "settings": {
+            "title": "Servicios",
+            "menu": "footer-servicios"
+          }
+        },
+        {
+          "type": "_orn-footer-link-group",
+          "settings": {
+            "title": "Agencia",
+            "menu": "footer-agencia"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

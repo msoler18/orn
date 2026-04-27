@@ -1,0 +1,73 @@
+{%- liquid
+  assign menu = linklists[block.settings.menu]
+  assign title_style = ''
+  if block.settings.title_color != blank
+    assign title_style = 'color:' | append: block.settings.title_color | append: ';'
+  endif
+-%}
+
+<nav class="orn-footer__menu" aria-label="{{ block.settings.title | escape }}" {{ block.shopify_attributes }}>
+  {%- if block.settings.title != blank -%}
+    <h3 class="orn-footer__menu-title" {% if title_style != '' %}style="{{ title_style }}"{% endif %}>
+      {{ block.settings.title }}
+    </h3>
+  {%- endif -%}
+
+  {%- if menu and menu.links.size > 0 -%}
+    <ul class="orn-footer__menu-list" role="list">
+      {%- for link in menu.links -%}
+        {%- assign is_anchor = false -%}
+        {%- assign first_char = link.url | slice: 0, 1 -%}
+        {%- if first_char == '#' -%}
+          {%- assign is_anchor = true -%}
+        {%- endif -%}
+        <li>
+          <a
+            class="orn-footer__menu-link"
+            href="{{ link.url }}"
+            {% if is_anchor %}data-orn-anchor="true"{% endif %}
+            {% if block.settings.link_color != blank %}style="color: {{ block.settings.link_color }};"{% endif %}
+          >
+            {{ link.title }}
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  {%- endif -%}
+</nav>
+
+{% schema %}
+{
+  "name": "Link group",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título",
+      "default": "Servicios"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menú",
+      "default": "main-menu",
+      "info": "Crea el menú en Online Store → Navigation (p. ej. footer-servicios, footer-agencia)."
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Color del título (opcional)"
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "label": "Color de los links (opcional)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Link group"
+    }
+  ]
+}
+{% endschema %}
