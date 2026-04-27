@@ -20,51 +20,62 @@
             "label": "Servicios",
             "target_kind": "anchor",
             "anchor": "#servicios",
+            "url": "",
             "open_in_new_tab": false
           }
         },
         "link-partners": {
           "type": "link",
+          "disabled": true,
           "settings": {
             "label": "Partners",
             "target_kind": "anchor",
             "anchor": "#partners",
+            "url": "",
             "open_in_new_tab": false
           }
         },
         "link-nosotros": {
           "type": "link",
+          "disabled": true,
           "settings": {
             "label": "Nosotros",
             "target_kind": "anchor",
             "anchor": "#nosotros",
+            "url": "",
             "open_in_new_tab": false
           }
         },
         "link-equipo": {
           "type": "link",
+          "disabled": true,
           "settings": {
             "label": "Equipo",
             "target_kind": "anchor",
             "anchor": "#equipo",
+            "url": "",
             "open_in_new_tab": false
           }
         },
         "link-blog": {
           "type": "link",
+          "disabled": true,
           "settings": {
             "label": "Blog",
             "target_kind": "anchor",
             "anchor": "#blog",
+            "url": "",
             "open_in_new_tab": false
           }
         },
         "link-testimonios": {
           "type": "link",
+          "disabled": true,
           "settings": {
             "label": "Testimonios",
             "target_kind": "anchor",
             "anchor": "#testimonios",
+            "url": "",
             "open_in_new_tab": false
           }
         }
@@ -78,6 +89,7 @@
         "link-testimonios"
       ],
       "settings": {
+        "logo": "shopify://shop_images/Capa_1.svg",
         "logo_link_anchor": "#top",
         "logo_height": 28,
         "logo_alt": "Ornevo",
@@ -88,7 +100,7 @@
         "enable_shadow": true,
         "shadow_intensity": "subtle",
         "color_scheme": "scheme-1",
-        "link_color_active": "#0D4F4A",
+        "link_color_active": "#0d4f4a",
         "cta_text": "¿Un proyecto?",
         "cta_target_anchor": "#contacto",
         "cta_variant": "primary",
