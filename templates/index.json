@@ -51,7 +51,8 @@
             "overlay_color_end": "#0d4f4a",
             "youtube_desktop": "",
             "youtube_mobile": "",
-            "image_desktop": "shopify://shop_images/prairie-woman-at-sunset.jpg",
+            "image_desktop": "shopify://shop_images/ChatGPT_Image_27_avr._2026_14_46_48_b24147d5-edb7-43cd-861a-5170e7086abe.webp",
+            "image_mobile": "shopify://shop_images/ChatGPT_Image_27_avr._2026_14_49_19_d86b2d8d-5260-4b27-bd1c-346b4fc9e892.webp",
             "cta1_text": "Démarrer mon projet",
             "cta1_url": "#contact",
             "cta1_icon_svg": "",
@@ -331,7 +332,7 @@
         "nav_active_text": "#ffffff",
         "nav_inactive_text": "#000000",
         "flash_color": "#e1edf5",
-        "item_bullet_bg": "",
+        "item_bullet_bg": "#0f1720",
         "progress_active": "",
         "progress_inactive": ""
       }
