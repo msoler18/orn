@@ -11,108 +11,95 @@
   "type": "header",
   "name": "t:names.header",
   "sections": {
-    "header_announcements_9jGBFp": {
-      "type": "header-announcements",
+    "header_section": {
+      "type": "orn-header",
       "blocks": {
-        "announcement_BxgCk9": {
-          "type": "_announcement",
+        "link-servicios": {
+          "type": "link",
           "settings": {
-            "text": "Welcome to our store",
-            "link": "",
-            "font": "var(--font-subheading--family)",
-            "font_size": "0.75rem",
-            "weight": "",
-            "letter_spacing": "normal",
-            "case": "none"
-          },
-          "blocks": {}
+            "label": "Servicios",
+            "target_kind": "anchor",
+            "anchor": "#servicios",
+            "open_in_new_tab": false
+          }
+        },
+        "link-partners": {
+          "type": "link",
+          "settings": {
+            "label": "Partners",
+            "target_kind": "anchor",
+            "anchor": "#partners",
+            "open_in_new_tab": false
+          }
+        },
+        "link-nosotros": {
+          "type": "link",
+          "settings": {
+            "label": "Nosotros",
+            "target_kind": "anchor",
+            "anchor": "#nosotros",
+            "open_in_new_tab": false
+          }
+        },
+        "link-equipo": {
+          "type": "link",
+          "settings": {
+            "label": "Equipo",
+            "target_kind": "anchor",
+            "anchor": "#equipo",
+            "open_in_new_tab": false
+          }
+        },
+        "link-blog": {
+          "type": "link",
+          "settings": {
+            "label": "Blog",
+            "target_kind": "anchor",
+            "anchor": "#blog",
+            "open_in_new_tab": false
+          }
+        },
+        "link-testimonios": {
+          "type": "link",
+          "settings": {
+            "label": "Testimonios",
+            "target_kind": "anchor",
+            "anchor": "#testimonios",
+            "open_in_new_tab": false
+          }
         }
       },
       "block_order": [
-        "announcement_BxgCk9"
+        "link-servicios",
+        "link-partners",
+        "link-nosotros",
+        "link-equipo",
+        "link-blog",
+        "link-testimonios"
       ],
-      "name": "t:names.announcement_bar",
       "settings": {
-        "speed": 5,
-        "section_width": "page-width",
+        "logo_link_anchor": "#top",
+        "logo_height": 28,
+        "logo_alt": "Ornevo",
+        "enable_sticky": true,
+        "top_offset": 16,
+        "side_inset": 24,
+        "radius": 48,
+        "enable_shadow": true,
+        "shadow_intensity": "subtle",
         "color_scheme": "scheme-1",
-        "divider_width": 1,
-        "padding-block-start": 15,
-        "padding-block-end": 15
-      }
-    },
-    "header_section": {
-      "type": "header",
-      "blocks": {
-        "header-logo": {
-          "type": "_header-logo",
-          "static": true,
-          "settings": {
-            "hide_logo_on_home_page": false,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        },
-        "header-menu": {
-          "type": "_header-menu",
-          "static": true,
-          "settings": {
-            "menu": "main-menu",
-            "color_scheme": "",
-            "type_font_primary_size": "0.875rem",
-            "menu_font_style": "inverse",
-            "type_font_primary_link": "body",
-            "type_case_primary_link": "none",
-            "menu_style": "featured_products",
-            "featured_products_aspect_ratio": "4 / 5",
-            "featured_collections_aspect_ratio": "16 / 9",
-            "image_border_radius": 0,
-            "navigation_bar": false,
-            "color_scheme_navigation_bar": "",
-            "drawer_accordion": false,
-            "drawer_accordion_expand_first": false,
-            "drawer_dividers": false
-          },
-          "blocks": {}
-        }
-      },
-      "settings": {
-        "logo_position": "left",
-        "menu_position": "left",
-        "menu_row": "top",
-        "show_search": true,
-        "search_position": "right",
-        "search_row": "top",
-        "show_country": true,
-        "country_selector_style": false,
-        "show_language": true,
-        "localization_font": "heading",
-        "localization_font_size": "0.875rem",
-        "localization_position": "right",
-        "localization_row": "top",
-        "section_width": "page-width",
-        "section_height": "standard",
-        "enable_sticky_header": "always",
-        "divider_width": 0,
-        "divider_size": "page-width",
-        "border_width": 0,
-        "color_scheme_top": "scheme-1",
-        "color_scheme_bottom": "",
-        "color_scheme_transparent": "scheme-6",
-        "enable_transparent_header_home": false,
-        "home_color_scheme": "inverse",
-        "enable_transparent_header_product": false,
-        "product_color_scheme": "default",
-        "enable_transparent_header_collection": false,
-        "collection_color_scheme": "default"
+        "link_color_active": "#0D4F4A",
+        "cta_text": "¿Un proyecto?",
+        "cta_target_anchor": "#contacto",
+        "cta_variant": "primary",
+        "cta_show_arrow": true,
+        "cta_show_on_mobile": true,
+        "enable_scroll_spy": true,
+        "scroll_spy_offset": 120
       }
     }
   },
   "order": [
-    "header_announcements_9jGBFp",
     "header_section"
   ]
 }

@@ -1,0 +1,336 @@
+{%- liquid
+  assign cta_anchor = section.settings.cta_target_anchor | default: '#contacto'
+  assign logo_anchor = section.settings.logo_link_anchor | default: '#top'
+  assign logo_alt = section.settings.logo_alt | default: shop.name
+
+  assign sticky_bool = 'false'
+  if section.settings.enable_sticky
+    assign sticky_bool = 'true'
+  endif
+
+  assign spy_bool = 'false'
+  if section.settings.enable_scroll_spy
+    assign spy_bool = 'true'
+  endif
+
+  assign shadow_class = 'orn-header__shell--shadow-' | append: section.settings.shadow_intensity
+  if section.settings.enable_shadow == false
+    assign shadow_class = 'orn-header__shell--shadow-none'
+  endif
+
+  assign cta_variant = section.settings.cta_variant | default: 'primary'
+  assign cta_class = 'ornevo-btn ornevo-btn--' | append: cta_variant
+  if section.settings.cta_show_on_mobile == false
+    assign cta_class = cta_class | append: ' orn-header__cta--desktop-only'
+  endif
+
+  assign active_color = section.settings.link_color_active | default: '#0D4F4A'
+
+  assign logo_height_value = section.settings.logo_height | default: 28
+  assign logo_style = 'height:' | append: logo_height_value | append: 'px;'
+-%}
+
+<div
+  class="orn-header-wrapper color-{{ section.settings.color_scheme }}"
+  {% if section.settings.enable_sticky %}data-sticky="true"{% endif %}
+  data-orn-header-root
+  style="
+    --orn-header-top-offset: {{ section.settings.top_offset }}px;
+    --orn-header-side-inset: {{ section.settings.side_inset }}px;
+    --orn-header-radius: {{ section.settings.radius }}px;
+    --orn-header-active-color: {{ active_color }};
+    --orn-header-scroll-offset: {{ section.settings.scroll_spy_offset }}px;
+  "
+>
+  <header
+    class="orn-header"
+    x-data="ornHeader({ enableSpy: {{ spy_bool }}, sticky: {{ sticky_bool }} })"
+    x-init="init()"
+    aria-label="Cabecera del sitio"
+  >
+    <div class="orn-header__shell {{ shadow_class }}">
+
+      <a
+        class="orn-header__logo"
+        href="{{ logo_anchor }}"
+        @click="onAnchorClick($event, '{{ logo_anchor }}')"
+      >
+        {%- if section.settings.logo != blank -%}
+          {{
+            section.settings.logo
+            | image_url: width: 400
+            | image_tag: alt: logo_alt, loading: 'eager', class: 'orn-header__logo-img', style: logo_style
+          }}
+        {%- else -%}
+          <span class="orn-header__logo-text">{{ logo_alt }}</span>
+        {%- endif -%}
+      </a>
+
+      <nav class="orn-header__nav" aria-label="Principal">
+        <ul class="orn-header__list" role="list">
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign is_anchor = false
+              if block.settings.target_kind == 'anchor'
+                assign is_anchor = true
+              endif
+
+              assign href = block.settings.url
+              if is_anchor
+                assign href = block.settings.anchor
+              endif
+              if href == blank
+                assign href = '#'
+              endif
+            -%}
+            <li class="orn-header__item">
+              <a
+                class="orn-header__link"
+                href="{{ href }}"
+                data-anchor="{{ block.settings.anchor }}"
+                data-target-kind="{{ block.settings.target_kind }}"
+                :class="{ 'is-active': activeAnchor === '{{ block.settings.anchor }}' }"
+                :aria-current="activeAnchor === '{{ block.settings.anchor }}' ? 'true' : 'false'"
+                {% if is_anchor %}
+                  @click="onAnchorClick($event, '{{ block.settings.anchor }}')"
+                {% endif %}
+                {% if block.settings.open_in_new_tab and is_anchor == false %}
+                  target="_blank"
+                  rel="noopener"
+                {% endif %}
+                {{ block.shopify_attributes }}
+              >
+                <span class="orn-header__link-label">{{ block.settings.label }}</span>
+                <span class="orn-header__link-indicator" aria-hidden="true"></span>
+              </a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </nav>
+
+      <a
+        class="orn-header__cta {{ cta_class }}"
+        href="{{ cta_anchor }}"
+        @click="onAnchorClick($event, '{{ cta_anchor }}')"
+      >
+        <span>{{ section.settings.cta_text }}</span>
+        {%- if section.settings.cta_show_arrow -%}
+          <svg class="orn-header__cta-arrow" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+            <path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        {%- endif -%}
+      </a>
+
+    </div>
+  </header>
+</div>
+
+{% schema %}
+{
+  "name": "Ornevo header",
+  "class": "orn-header-section",
+  "blocks": [
+    {
+      "type": "link",
+      "name": "Link",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Etiqueta",
+          "default": "Servicios"
+        },
+        {
+          "type": "select",
+          "id": "target_kind",
+          "label": "Destino",
+          "options": [
+            { "value": "anchor", "label": "Ancla en la página" },
+            { "value": "url", "label": "URL" }
+          ],
+          "default": "anchor"
+        },
+        {
+          "type": "text",
+          "id": "anchor",
+          "label": "Ancla (#id)",
+          "default": "#servicios",
+          "info": "Solo si destino = Ancla en la página."
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "URL",
+          "info": "Solo si destino = URL."
+        },
+        {
+          "type": "checkbox",
+          "id": "open_in_new_tab",
+          "label": "Abrir en nueva pestaña",
+          "default": false,
+          "info": "Solo aplica cuando destino = URL."
+        }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "enabled_on": {
+    "groups": ["header"]
+  },
+  "settings": [
+    { "type": "header", "content": "Logo" },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logotipo"
+    },
+    {
+      "type": "text",
+      "id": "logo_link_anchor",
+      "label": "Destino del logo",
+      "default": "#top"
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "label": "Alto del logo (px)",
+      "min": 16,
+      "max": 48,
+      "step": 2,
+      "default": 28,
+      "unit": "px"
+    },
+    {
+      "type": "text",
+      "id": "logo_alt",
+      "label": "Texto alternativo del logo",
+      "default": "Ornevo"
+    },
+
+    { "type": "header", "content": "Comportamiento" },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky",
+      "label": "Sticky al hacer scroll",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "top_offset",
+      "label": "Separación superior",
+      "min": 0,
+      "max": 48,
+      "step": 2,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "side_inset",
+      "label": "Margen lateral",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "radius",
+      "label": "Radio (píldora)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "default": 48,
+      "unit": "px"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_shadow",
+      "label": "Sombra",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "shadow_intensity",
+      "label": "Intensidad de la sombra",
+      "options": [
+        { "value": "subtle", "label": "Sutil" },
+        { "value": "medium", "label": "Media" },
+        { "value": "strong", "label": "Fuerte" }
+      ],
+      "default": "subtle"
+    },
+
+    { "type": "header", "content": "Colores" },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Esquema de color",
+      "default": "scheme-1"
+    },
+    {
+      "type": "color",
+      "id": "link_color_active",
+      "label": "Color del link activo",
+      "default": "#0D4F4A"
+    },
+
+    { "type": "header", "content": "CTA" },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Texto del CTA",
+      "default": "¿Un proyecto?"
+    },
+    {
+      "type": "text",
+      "id": "cta_target_anchor",
+      "label": "Ancla del CTA",
+      "default": "#contacto"
+    },
+    {
+      "type": "select",
+      "id": "cta_variant",
+      "label": "Estilo del CTA",
+      "options": [
+        { "value": "primary", "label": "Primary" },
+        { "value": "secondary", "label": "Secondary" },
+        { "value": "tertiary", "label": "Tertiary" }
+      ],
+      "default": "primary"
+    },
+    {
+      "type": "checkbox",
+      "id": "cta_show_arrow",
+      "label": "Mostrar flecha",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "cta_show_on_mobile",
+      "label": "Mostrar CTA en móvil",
+      "default": true
+    },
+
+    { "type": "header", "content": "Scroll-spy" },
+    {
+      "type": "checkbox",
+      "id": "enable_scroll_spy",
+      "label": "Activar scroll-spy",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "scroll_spy_offset",
+      "label": "Offset del observer",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "default": 120,
+      "unit": "px"
+    }
+  ],
+  "presets": []
+}
+{% endschema %}

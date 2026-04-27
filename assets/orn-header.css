@@ -1,0 +1,151 @@
+/* Ornevo — orn-header. Floating pill, sticky, scroll-spy indicator. */
+
+.orn-header-wrapper {
+  --orn-header-pad-y: 14px;
+  --orn-header-pad-x: 28px;
+  --orn-header-shell-bg: var(--color-background, #fff);
+  --orn-header-shell-fg: var(--color-foreground, #0F1720);
+  position: relative;
+  width: 100%;
+  z-index: 100;
+}
+
+.orn-header-wrapper[data-sticky='true'] {
+  position: sticky;
+  top: var(--orn-header-top-offset, 16px);
+  z-index: 100;
+}
+
+.orn-header {
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+  padding-top: var(--orn-header-top-offset, 16px);
+}
+
+.orn-header-wrapper[data-sticky='true'] .orn-header {
+  padding-top: 0;
+}
+
+.orn-header__shell {
+  pointer-events: auto;
+  width: calc(100% - 2 * var(--orn-header-side-inset, 24px));
+  max-width: 1320px;
+  background: var(--orn-header-shell-bg);
+  color: var(--orn-header-shell-fg);
+  border-radius: var(--orn-header-radius, 48px);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--gap-xl, 24px);
+  padding: var(--orn-header-pad-y) var(--orn-header-pad-x);
+  transition: box-shadow .25s ease, transform .25s ease;
+}
+
+.orn-header__shell--shadow-subtle  { box-shadow: 0 4px 16px rgba(15, 23, 32, .06); }
+.orn-header__shell--shadow-medium  { box-shadow: 0 8px 24px rgba(15, 23, 32, .10); }
+.orn-header__shell--shadow-strong  { box-shadow: 0 12px 32px rgba(15, 23, 32, .16); }
+.orn-header__shell--shadow-none    { box-shadow: none; }
+
+.orn-header-wrapper[data-scrolled] .orn-header__shell {
+  box-shadow: 0 10px 28px rgba(15, 23, 32, .12);
+}
+
+.orn-header__logo {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+}
+.orn-header__logo-img {
+  display: block;
+  width: auto;
+}
+.orn-header__logo-text {
+  font-family: var(--font-heading--family);
+  font-weight: 700;
+  font-size: 1.125rem;
+  letter-spacing: -0.01em;
+}
+
+.orn-header__nav {
+  display: flex;
+  justify-content: center;
+}
+.orn-header__list {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.orn-header__item {
+  display: flex;
+}
+.orn-header__link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 4px;
+  font-family: var(--font-body--family);
+  font-size: 1rem;
+  color: inherit;
+  text-decoration: none;
+  transition: color .2s ease;
+}
+.orn-header__link:hover {
+  color: var(--orn-header-active-color, #0D4F4A);
+}
+
+.orn-header__link-indicator {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%) scaleX(0);
+  transform-origin: center;
+  width: 60%;
+  height: 2px;
+  background: var(--orn-header-active-color, #0D4F4A);
+  transition: transform .25s var(--ease-out-cubic, cubic-bezier(.65, .05, .35, 1));
+}
+.orn-header__link.is-active {
+  color: var(--orn-header-active-color, #0D4F4A);
+}
+.orn-header__link.is-active .orn-header__link-indicator {
+  transform: translateX(-50%) scaleX(1);
+}
+
+.orn-header__cta {
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.orn-header__cta-arrow {
+  flex-shrink: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orn-header__shell,
+  .orn-header__link-indicator {
+    transition: none;
+  }
+}
+
+@media (max-width: 749px) {
+  .orn-header__shell {
+    grid-template-columns: auto 1fr auto;
+    padding-inline: 16px;
+    gap: 12px;
+  }
+  .orn-header__nav { display: none; }
+  .orn-header__cta--desktop-only { display: none; }
+}
+
+.orn-header__link:focus-visible,
+.orn-header__cta:focus-visible,
+.orn-header__logo:focus-visible {
+  outline: 2px solid #4ec0de;
+  outline-offset: 3px;
+  border-radius: 8px;
+}
