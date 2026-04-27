@@ -88,6 +88,15 @@
         return this.$el.querySelectorAll('.orn-hero__slide')[index] || null;
       },
 
+      slideIdxOf(el) {
+        const slide = el && el.closest ? el.closest('.orn-hero__slide') : null;
+        if (!slide) return -1;
+        const slides = slide.parentElement
+          ? slide.parentElement.querySelectorAll('.orn-hero__slide')
+          : [];
+        return Array.prototype.indexOf.call(slides, slide);
+      },
+
       syncSlides() {
         const slides = this.$el.querySelectorAll('.orn-hero__slide');
         slides.forEach((slide, i) => {

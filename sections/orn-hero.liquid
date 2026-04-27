@@ -1,12 +1,5 @@
 {%- liquid
-  assign valid_blocks_count = 0
-  for block in section.blocks
-    if block.settings.title != blank
-      if block.settings.image_desktop != blank or block.settings.youtube_desktop != blank
-        assign valid_blocks_count = valid_blocks_count | plus: 1
-      endif
-    endif
-  endfor
+  assign valid_blocks_count = section.blocks.size
 
   assign autoplay_ms = section.settings.autoplay_interval | default: 0 | times: 1
   assign anchor_id = section.settings.anchor_id | handleize | default: section.id
@@ -59,7 +52,6 @@
     <button
       type="button"
       class="orn-hero__play"
-      x-show="hasActiveVideo"
       @click="togglePlay()"
       :aria-label="playing ? 'Pausar video' : 'Reproducir video'"
     >

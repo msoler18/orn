@@ -41,41 +41,39 @@
   endif
 
   assign heading_tag = 'h2'
-  if forloop.first or block.settings.is_first_slide
+  if block.settings.is_first_slide
     assign heading_tag = 'h1'
   endif
 
   assign overlay = block.settings.overlay_opacity | default: 0 | times: 1
   assign overlay_start = block.settings.overlay_color_start | default: '#0F1720'
   assign overlay_end   = block.settings.overlay_color_end   | default: '#0D4F4A'
+  assign text_color    = block.settings.text_color | default: ''
 -%}
 
 {%- if render_slide -%}
   <div
     class="orn-hero__slide"
-    :class="{ 'is-active': active === {{ forloop.index0 }} }"
-    data-slide-index="{{ forloop.index0 }}"
+    :class="{ 'is-active': active === slideIdxOf($el) }"
     data-has-video="{% if has_video_desktop %}true{% else %}false{% endif %}"
     data-yt-desktop="{{ yt_desktop_id }}"
     data-yt-mobile="{{ yt_mobile_id }}"
     role="group"
     aria-roledescription="slide"
-    aria-label="Slide {{ forloop.index }}"
+    aria-label="Slide"
     {{ block.shopify_attributes }}
   >
     <div class="orn-hero__media" aria-hidden="true">
       {%- if has_video_desktop -%}
         <div
           class="orn-hero__video orn-hero__video--desktop"
-          x-show="active === {{ forloop.index0 }}"
-          x-ref="videoDesktop{{ forloop.index0 }}"
+          x-show="active === slideIdxOf($el)"
         ></div>
       {%- endif -%}
       {%- if has_video_mobile -%}
         <div
           class="orn-hero__video orn-hero__video--mobile"
-          x-show="active === {{ forloop.index0 }}"
-          x-ref="videoMobile{{ forloop.index0 }}"
+          x-show="active === slideIdxOf($el)"
         ></div>
       {%- endif -%}
 
@@ -91,7 +89,7 @@
           "
           sizes="100vw"
           alt=""
-          loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+          loading="{% if block.settings.is_first_slide %}eager{% else %}lazy{% endif %}"
           width="{{ block.settings.image_desktop.width }}"
           height="{{ block.settings.image_desktop.height }}"
         >
@@ -108,7 +106,7 @@
           "
           sizes="100vw"
           alt=""
-          loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+          loading="{% if block.settings.is_first_slide %}eager{% else %}lazy{% endif %}"
           width="{{ block.settings.image_mobile.width }}"
           height="{{ block.settings.image_mobile.height }}"
         >
@@ -124,7 +122,7 @@
       {%- endif -%}
     </div>
 
-    <div class="orn-hero__content">
+    <div class="orn-hero__content"{% if text_color != blank %} style="color: {{ text_color }};"{% endif %}>
       <{{ heading_tag }} class="orn-hero__title">{{ block.settings.title }}</{{ heading_tag }}>
       {%- if block.settings.description != blank -%}
         <div class="orn-hero__description rte">{{ block.settings.description }}</div>
@@ -161,16 +159,33 @@
       "content": "Contenido"
     },
     {
+      "type": "checkbox",
+      "id": "is_first_slide",
+      "label": "Es el primer slide",
+      "default": true,
+      "info": "Si activo, el título se renderiza como H1 y la imagen carga en eager. Marcar solo en el primer slide."
+    },
+    {
       "type": "inline_richtext",
       "id": "title",
       "label": "Título",
-      "info": "Obligatorio. En el primer slide se renderiza como H1."
+      "info": "Obligatorio."
     },
     {
       "type": "richtext",
       "id": "description",
       "label": "Descripción",
       "info": "Máx. 3 líneas en escritorio, 5 en móvil."
+    },
+    {
+      "type": "header",
+      "content": "Color del texto"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Color del texto del slide",
+      "info": "Vacío = hereda del esquema de color de la sección."
     },
     {
       "type": "header",

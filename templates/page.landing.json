@@ -19,6 +19,38 @@
         "debug_overlay": false
       }
     },
+    "orn-hero": {
+      "type": "orn-hero",
+      "blocks": {
+        "slide_01": {
+          "type": "_orn-hero-slide",
+          "settings": {
+            "is_first_slide": true,
+            "title": "Tu presencia digital, amplificada en Normandía",
+            "description": "<p>Acompañamos a las PYMES normandas —<br>sitios web, marketing, e-commerce.</p>",
+            "overlay_opacity": 0,
+            "overlay_color_start": "#0F1720",
+            "overlay_color_end": "#0D4F4A",
+            "youtube_desktop": "https://www.youtube.com/watch?v=BsafeSHN_II",
+            "youtube_mobile": "https://www.youtube.com/watch?v=BsafeSHN_II",
+            "cta1_text": "Iniciar un proyecto",
+            "cta1_url": "#contacto",
+            "cta1_variant": "primary",
+            "cta1_new_tab": false,
+            "cta2_text": "Label",
+            "cta2_variant": "secondary",
+            "cta2_new_tab": false
+          }
+        }
+      },
+      "block_order": ["slide_01"],
+      "settings": {
+        "anchor_id": "hero",
+        "autoplay_interval": 0,
+        "aria_label": "Hero Ornevo",
+        "color_scheme": "scheme-1"
+      }
+    },
     "main": {
       "type": "main-page",
       "blocks": {
@@ -201,5 +233,5 @@
       }
     }
   },
-  "order": ["orn-infinite-loop", "main", "orn-services", "orn-contact-form"]
+  "order": ["orn-infinite-loop", "orn-hero", "main", "orn-services", "orn-contact-form"]
 }
