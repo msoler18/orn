@@ -393,7 +393,7 @@
         "message_error_required": "Ce champ est obligatoire",
         "message_error_format": "Min. 10 caractères si vous renseignez ce champ",
         "message_max_chars": 1000,
-        "submit_text": "Enovyer",
+        "submit_text": "Envoyer",
         "submit_variant": "primary",
         "email_subject_prefix": "Nouveau contact – Ornevo",
         "success_heading": "Merci, message bien reçu.",
