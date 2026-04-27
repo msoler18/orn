@@ -38,15 +38,16 @@
     <div class="{{ band_classes }}">
       <div class="orn-footer__band-inner">
         {%- if section.settings.cta_band_heading != blank -%}
-          <div class="orn-footer__band-heading">{{ section.settings.cta_band_heading }}</div>
+          <div class="orn-footer__band-heading" data-orn-reveal="fade-up">{{ section.settings.cta_band_heading }}</div>
         {%- endif -%}
         {%- if section.settings.cta_band_subtitle != blank -%}
-          <div class="orn-footer__band-subtitle">{{ section.settings.cta_band_subtitle }}</div>
+          <div class="orn-footer__band-subtitle" data-orn-reveal="fade-up">{{ section.settings.cta_band_subtitle }}</div>
         {%- endif -%}
         {%- if section.settings.cta_band_button_text != blank -%}
           <a
             class="orn-footer__band-cta ornevo-btn ornevo-btn--{{ section.settings.cta_band_button_variant }}"
             href="{{ anchor }}"
+            data-orn-reveal="scale-up"
             {% if is_anchor %}data-orn-anchor="true"{% endif %}
             {% if section.settings.cta_band_button_open_in_new_tab and is_anchor == false %}target="_blank" rel="noopener"{% endif %}
           >
@@ -64,7 +65,7 @@
         {%- comment -%} ── Top: brand / contact / social ── tagline ── {%- endcomment -%}
         <div class="orn-footer__card-top">
 
-          <div class="orn-footer__brand">
+          <div class="orn-footer__brand" data-orn-reveal="fade-up">
             {%- if section.settings.logo != blank -%}
               <a href="{{ routes.root_url }}" class="orn-footer__logo" aria-label="{{ section.settings.logo_alt | default: shop.name | escape }}">
                 {{
@@ -107,6 +108,7 @@
             <div
               class="orn-footer__tagline orn-footer__tagline--{{ section.settings.tagline_alignment }}"
               :class="{ 'is-revealed': pillRevealed }"
+              data-orn-reveal="fade-up"
             >
               {%- if section.settings.tagline_lead != blank -%}
                 <span class="orn-footer__tagline-lead">{{ section.settings.tagline_lead }}</span>
@@ -143,7 +145,7 @@
             {%- endfor -%}
           </div>
 
-          <div class="orn-footer__menus">
+          <div class="orn-footer__menus" data-orn-reveal="stagger-children">
             {% content_for 'blocks' %}
           </div>
 

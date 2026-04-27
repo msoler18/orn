@@ -1,0 +1,21 @@
+/*
+ * Ornevo — scroll-triggered reveal styles (fail-open).
+ *
+ * Initial states are set by JS via gsap.set() so that if anything fails
+ * (CDN blocked, alpine:initialized never fires, JS error), content stays
+ * visible by default. The CSS here only declares `will-change` for the
+ * GPU hint and forces visibility inside infinite-loop clones.
+ */
+
+[data-orn-reveal] {
+  will-change: opacity, transform;
+}
+
+/* Clones never run JS — make sure they always render their content fully. */
+.orn-loop-clone [data-orn-reveal],
+.orn-loop-clone [data-orn-reveal="stagger-children"] > * {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+  will-change: auto !important;
+}

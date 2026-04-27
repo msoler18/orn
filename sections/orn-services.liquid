@@ -64,7 +64,7 @@
       {%- if section.settings.section_title != blank or section.settings.section_subtitle != blank -%}
         <header class="orn-services__header">
           {%- if section.settings.section_title != blank -%}
-            <h2 id="{{ anchor_id }}-title" class="orn-services__title">
+            <h2 id="{{ anchor_id }}-title" class="orn-services__title" data-orn-reveal="fade-up">
               {{ section.settings.section_title }}
             </h2>
           {%- endif -%}
@@ -79,6 +79,7 @@
         class="orn-services__nav"
         role="tablist"
         aria-label="{{ 'Navegación de servicios' | escape }}"
+        data-orn-reveal="stagger-children"
       >
         <span class="orn-services__indicator" aria-hidden="true"></span>
         <span class="orn-services__flash" aria-hidden="true"></span>

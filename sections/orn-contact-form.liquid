@@ -47,7 +47,7 @@
         </div>
       {%- endif -%}
 
-      <h2 id="{{ anchor }}-title" class="orn-contact__title">
+      <h2 id="{{ anchor }}-title" class="orn-contact__title" data-orn-reveal="fade-up">
         {{ section.settings.heading }}
       </h2>
 
@@ -61,7 +61,7 @@
     </aside>
 
     {%- comment -%} ── Panel derecho con form / éxito ── {%- endcomment -%}
-    <div class="orn-contact__panel">
+    <div class="orn-contact__panel" data-orn-reveal="scale-up">
 
       <div x-show="!success" @submit="onSubmit($event)">
       {%- form 'contact',
