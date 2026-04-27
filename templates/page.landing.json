@@ -348,7 +348,7 @@
         "color_scheme": "scheme-1",
         "nav_bg": "",
         "nav_border": "",
-        "nav_active_bg": "",
+        "nav_active_bg": "#0d4f4a",
         "nav_active_text": "",
         "nav_inactive_text": "",
         "flash_color": "",
