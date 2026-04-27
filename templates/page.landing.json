@@ -27,9 +27,9 @@
           "settings": {
             "is_first_slide": true,
             "title": "Tu presencia digital, amplificada en Normandía",
-            "description": "<p>Acompañamos a las PYMES normandas —<br>sitios web, marketing, e-commerce.</p>",
-            "text_color": "",
-            "overlay_opacity": 0,
+            "description": "<p>Acompañamos a las PYMES normandas —<br/>sitios web, marketing, e-commerce.</p>",
+            "text_color": "#ffffff",
+            "overlay_opacity": 60,
             "overlay_color_start": "#0f1720",
             "overlay_color_end": "#0d4f4a",
             "youtube_desktop": "https://www.youtube.com/watch?v=BsafeSHN_II",
@@ -53,7 +53,7 @@
       ],
       "settings": {
         "anchor_id": "hero",
-        "autoplay_interval": 0,
+        "autoplay_interval": 1,
         "aria_label": "Hero Ornevo",
         "color_scheme": "scheme-1"
       }
