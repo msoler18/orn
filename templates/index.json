@@ -223,9 +223,9 @@
           "type": "tab",
           "settings": {
             "tab_label_desktop": "",
-            "panel_title": "Desarrollo ecommerce",
+            "panel_title": "Développement",
             "panel_heading_level": "h3",
-            "panel_description": "<p>Antes de construir, entendemos tu negocio.</p>",
+            "panel_description": "<p><em>Du code propre, des intégrations fiables</em></p>",
             "panel_image": "shopify://shop_images/Media.svg",
             "item_1_icon": "shopify://shop_images/Content_1.svg",
             "item_1_text": "<p>Auditoría digital (SEO, UX, rendimiento)</p>",
