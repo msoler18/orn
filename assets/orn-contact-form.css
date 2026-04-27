@@ -1,0 +1,284 @@
+/* =========================================================================
+ * orn-contact-form.css — ADR-0004
+ * Section: orn-contact-form
+ * Layout (2-col desktop / stacked mobile), inputs, errors, success.
+ * ========================================================================= */
+
+/* Alpine cloak — global guard for any [x-cloak] in this section.
+   (No global x-cloak rule found in base.css or other orn-*.css.) */
+[x-cloak] { display: none !important; }
+
+/* ---------- Section shell ---------- */
+.orn-contact {
+  scroll-margin-top: var(--header-height, 80px);
+  padding-block: var(--orn-contact-pt, 64px) var(--orn-contact-pb, 64px);
+  --orn-contact-error: #C0392B;
+  --orn-contact-accent: var(--color-accent, #4ec0de);
+}
+
+/* ---------- Grid (desktop 2 col / mobile stacked) ---------- */
+.orn-contact__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  max-width: 1320px;
+  margin-inline: auto;
+  padding-inline: var(--page-margin, 24px);
+}
+
+@media (min-width: 750px) {
+  .orn-contact__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+    gap: clamp(24px, 4vw, 56px);
+  }
+}
+
+/* ---------- Card izquierda ---------- */
+.orn-contact__intro {
+  border-radius: 24px 24px 0 0;
+  padding: clamp(32px, 5vw, 64px);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-self: start;
+}
+
+@media (min-width: 750px) {
+  .orn-contact__intro {
+    border-radius: 32px;
+  }
+}
+
+.orn-contact__logo {
+  display: block;
+}
+.orn-contact__logo--mobile-only { display: block; }
+@media (min-width: 750px) {
+  .orn-contact__logo--mobile-only { display: none; }
+}
+
+.orn-contact__title {
+  font-family: var(--font-heading--family, inherit);
+  font-weight: 700;
+  font-size: clamp(2.25rem, 5vw, 3.5rem);
+  line-height: 1.05;
+  margin: 0;
+}
+
+.orn-contact__title :is(p, h1, h2, h3) {
+  margin: 0;
+  font: inherit;
+}
+
+.orn-contact__pill {
+  display: inline-block;
+  padding: 6px 18px;
+  border-radius: 999px;
+  background: rgb(var(--color-foreground-rgb, 0 0 0) / 0.06);
+  font-weight: 600;
+  width: fit-content;
+}
+
+.orn-contact__subtitle {
+  font-size: 1rem;
+  line-height: 1.5;
+  opacity: 0.85;
+}
+.orn-contact__subtitle :is(p) { margin: 0; }
+
+/* ---------- Panel derecho ---------- */
+.orn-contact__panel {
+  border-radius: 0 0 24px 24px;
+  padding: clamp(24px, 5vw, 40px);
+}
+
+@media (min-width: 750px) {
+  .orn-contact__panel {
+    border-radius: 32px;
+    padding: clamp(32px, 4vw, 48px);
+  }
+}
+
+/* ---------- Form ---------- */
+.orn-contact__form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.orn-contact__row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+@media (min-width: 750px) {
+  .orn-contact__row--2 { grid-template-columns: 1fr 1fr; }
+}
+
+.orn-contact__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: relative;
+}
+
+.orn-contact__field--select {
+  position: relative;
+}
+
+.orn-contact__label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.2;
+  color: inherit;
+}
+
+.orn-contact__req {
+  margin-left: 2px;
+  color: inherit;
+}
+
+/* ---------- Inputs / select / textarea ---------- */
+.orn-contact__input,
+.orn-contact__select,
+.orn-contact__textarea {
+  border: 1px solid var(--color-border, #d8d8d2);
+  border-radius: 999px;
+  padding: 12px 18px;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease, outline-color 0.15s ease;
+}
+
+.orn-contact__textarea {
+  border-radius: 16px;
+  padding: 14px 18px;
+  resize: vertical;
+  min-height: 140px;
+}
+
+.orn-contact__input::placeholder,
+.orn-contact__textarea::placeholder {
+  color: rgba(15, 23, 32, 0.5);
+}
+
+.orn-contact__input:focus,
+.orn-contact__select:focus,
+.orn-contact__textarea:focus {
+  outline: 2px solid var(--orn-contact-accent, #4ec0de);
+  outline-offset: 2px;
+  border-color: var(--orn-contact-accent, #4ec0de);
+}
+
+/* Error state */
+.orn-contact__field.has-error .orn-contact__input,
+.orn-contact__field.has-error .orn-contact__select,
+.orn-contact__field.has-error .orn-contact__textarea {
+  border-color: var(--orn-contact-error, #C0392B);
+}
+.orn-contact__field.has-error .orn-contact__input:focus,
+.orn-contact__field.has-error .orn-contact__select:focus,
+.orn-contact__field.has-error .orn-contact__textarea:focus {
+  outline-color: var(--orn-contact-error, #C0392B);
+}
+
+/* Select caret */
+.orn-contact__select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-right: 40px;
+  cursor: pointer;
+}
+.orn-contact__select-caret {
+  position: absolute;
+  right: 18px;
+  bottom: 14px;
+  pointer-events: none;
+  font-size: 0.875rem;
+  opacity: 0.6;
+}
+
+/* Error message */
+.orn-contact__error {
+  color: var(--orn-contact-error, #C0392B);
+  font-size: 0.875rem;
+  margin: 6px 0 0;
+}
+
+/* Counter */
+.orn-contact__counter {
+  text-align: right;
+  font-size: 0.75rem;
+  color: rgba(15, 23, 32, 0.55);
+  margin: 4px 0 0;
+}
+
+/* Server-error banner */
+.orn-contact__server-error {
+  background: rgba(192, 57, 43, 0.08);
+  color: var(--orn-contact-error, #C0392B);
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 0.9rem;
+}
+
+/* ---------- Actions ---------- */
+.orn-contact__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
+  margin-top: 8px;
+}
+
+.orn-contact__submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.orn-contact__error-summary {
+  color: var(--orn-contact-error, #C0392B);
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+/* ---------- Success state ---------- */
+.orn-contact__success {
+  padding: 32px;
+  border-radius: 24px;
+  background: rgba(78, 192, 222, 0.12);
+}
+
+.orn-contact__success-title {
+  margin: 0 0 12px;
+  font-family: var(--font-heading--family, inherit);
+  font-weight: 700;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  line-height: 1.15;
+}
+
+.orn-contact__success-body :is(p) { margin: 0; }
+
+/* Hide honeypot regardless of inline style */
+.orn-contact__honey {
+  position: absolute !important;
+  left: -10000px !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .orn-contact,
+  .orn-contact * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

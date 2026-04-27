@@ -1,0 +1,43 @@
+{%- liquid
+  assign label_setting = field | append: '_label'
+  assign placeholder_setting = field | append: '_placeholder'
+  assign required_setting = field | append: '_required'
+  assign label = section.settings[label_setting]
+  assign placeholder = section.settings[placeholder_setting]
+  assign required = section.settings[required_setting]
+  assign id = 'orn-contact-' | append: field
+
+  if field == 'email'
+    assign input_name = 'contact[email]'
+  elsif field == 'phone'
+    assign input_name = 'contact[phone]'
+  else
+    assign stripped_label = label | strip
+    assign input_name = 'contact[' | append: stripped_label | append: ']'
+  endif
+-%}
+<div class="orn-contact__field" :class="{ 'has-error': errors.{{ field }} }">
+  <label class="orn-contact__label" for="{{ id }}">
+    {{ label }}{%- if required -%}<span class="orn-contact__req" aria-hidden="true">*</span>{%- endif -%}
+  </label>
+  <input
+    type="{{ type }}"
+    id="{{ id }}"
+    name="{{ input_name }}"
+    class="orn-contact__input"
+    x-model="values.{{ field }}"
+    placeholder="{{ placeholder | escape }}"
+    {% if required %}aria-required="true"{% endif %}
+    :aria-invalid="errors.{{ field }} ? 'true' : 'false'"
+    :aria-describedby="errors.{{ field }} ? '{{ id }}-error' : null"
+    @blur="validateField('{{ field }}')"
+    {{ extra_attrs }}
+  />
+  <p
+    class="orn-contact__error"
+    id="{{ id }}-error"
+    x-show="errors.{{ field }}"
+    x-cloak
+    x-text="errors.{{ field }}"
+  ></p>
+</div>

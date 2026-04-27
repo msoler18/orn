@@ -1,0 +1,38 @@
+{%- liquid
+  assign label_key = field | append: '_label'
+  assign placeholder_key = field | append: '_placeholder'
+  assign required_key = field | append: '_required'
+  assign label = section.settings[label_key]
+  assign placeholder = section.settings[placeholder_key]
+  assign required = section.settings[required_key]
+  assign max = section.settings.message_max_chars
+  assign id = 'orn-contact-' | append: field
+  assign stripped_label = label | strip
+  assign input_name = 'contact[' | append: stripped_label | append: ']'
+-%}
+<div class="orn-contact__field orn-contact__field--textarea" :class="{ 'has-error': errors.{{ field }} }">
+  <label class="orn-contact__label" for="{{ id }}">
+    {{ label }}{%- if required -%}<span class="orn-contact__req" aria-hidden="true">*</span>{%- endif -%}
+  </label>
+  <textarea
+    id="{{ id }}"
+    name="{{ input_name }}"
+    class="orn-contact__textarea"
+    rows="5"
+    maxlength="{{ max }}"
+    x-model="values.{{ field }}"
+    placeholder="{{ placeholder | escape }}"
+    {% if required %}aria-required="true"{% endif %}
+    :aria-invalid="errors.{{ field }} ? 'true' : 'false'"
+    :aria-describedby="errors.{{ field }} ? '{{ id }}-error' : null"
+    @blur="validateField('{{ field }}')"
+  ></textarea>
+  <p class="orn-contact__counter" aria-live="polite" x-text="`${(values.{{ field }} || '').length} / {{ max }}`"></p>
+  <p
+    class="orn-contact__error"
+    id="{{ id }}-error"
+    x-show="errors.{{ field }}"
+    x-cloak
+    x-text="errors.{{ field }}"
+  ></p>
+</div>

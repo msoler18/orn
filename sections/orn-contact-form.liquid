@@ -1,0 +1,367 @@
+{%- liquid
+  assign anchor = section.settings.anchor_id | handleize
+  if anchor == blank
+    assign anchor = section.id
+  endif
+  assign success_flag = false
+  if form.posted_successfully?
+    assign success_flag = true
+  endif
+-%}
+
+<section
+  id="{{ anchor }}"
+  class="orn-contact orn-contact--two-col color-{{ section.settings.color_scheme_right }}"
+  x-data="ornContactForm({
+    countryCode: '{{ section.settings.phone_country_code | escape }}',
+    rules: {
+      fullname: {{ section.settings.fullname_required }},
+      email:    {{ section.settings.email_required }},
+      phone:    {{ section.settings.phone_required }},
+      company:  {{ section.settings.company_required }},
+      website:  {{ section.settings.website_required }},
+      select_1: {{ section.settings.select_1_required }},
+      select_2: {{ section.settings.select_2_required }},
+      message:  {{ section.settings.message_required }}
+    },
+    messageMax: {{ section.settings.message_max_chars }}
+  })"
+  x-init="init()"
+  style="--orn-contact-pt: {{ section.settings.padding_block_start }}px; --orn-contact-pb: {{ section.settings.padding_block_end }}px;"
+  aria-labelledby="{{ anchor }}-title"
+>
+  <div class="orn-contact__grid">
+
+    {%- comment -%} ── Card izquierda ── {%- endcomment -%}
+    <aside class="orn-contact__intro color-{{ section.settings.color_scheme_left }}">
+      {%- if section.settings.logo != blank -%}
+        <div class="orn-contact__logo {% unless section.settings.logo_show_desktop %}orn-contact__logo--mobile-only{% endunless %}">
+          {{
+            section.settings.logo
+            | image_url: width: 320
+            | image_tag:
+              alt: 'Ornevo',
+              loading: 'lazy',
+              style: 'height:' | append: section.settings.logo_height | append: 'px;width:auto;'
+          }}
+        </div>
+      {%- endif -%}
+
+      <h2 id="{{ anchor }}-title" class="orn-contact__title">
+        {{ section.settings.heading }}
+      </h2>
+
+      {%- if section.settings.tag_pill_text != blank -%}
+        <span class="orn-contact__pill">{{ section.settings.tag_pill_text }}</span>
+      {%- endif -%}
+
+      {%- if section.settings.subtitle != blank -%}
+        <div class="orn-contact__subtitle">{{ section.settings.subtitle }}</div>
+      {%- endif -%}
+    </aside>
+
+    {%- comment -%} ── Panel derecho con form / éxito ── {%- endcomment -%}
+    <div class="orn-contact__panel">
+
+      <div x-show="!success" @submit="onSubmit($event)">
+      {%- form 'contact',
+        id: 'orn-contact-form',
+        class: 'orn-contact__form',
+        novalidate: 'novalidate'
+      -%}
+
+        {%- if form.errors -%}
+          <div class="orn-contact__server-error" role="alert">
+            {{ section.settings.generic_server_error }}
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} subject prefix → Shopify uses `contact[subject]` as the email subject {%- endcomment -%}
+        <input type="hidden" name="contact[subject]" value="{{ section.settings.email_subject_prefix | escape }}">
+
+        {%- comment -%} Honeypot: bots fill this; humans never see it. JS aborts submit if non-empty. {%- endcomment -%}
+        <input
+          type="text"
+          name="contact[honey]"
+          class="orn-contact__honey"
+          x-model="values.honey"
+          style="display:none"
+          tabindex="-1"
+          autocomplete="off"
+          aria-hidden="true"
+        >
+
+        {%- comment -%} Error-copy templates: read by JS via [data-error-source="<field>_<suffix>"] {%- endcomment -%}
+        {%- assign field_keys = 'fullname,email,phone,company,website,select_1,select_2,message' | split: ',' -%}
+        {%- assign error_suffixes = 'error_required,error_format' | split: ',' -%}
+        {%- for f in field_keys -%}
+          {%- for suffix in error_suffixes -%}
+            {%- assign key = f | append: '_' | append: suffix -%}
+            {%- assign val = section.settings[key] -%}
+            {%- if val != blank -%}
+              <template data-error-source="{{ f }}_{{ suffix }}" data-error-text="{{ val | escape }}"></template>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endfor -%}
+
+        <div class="orn-contact__row orn-contact__row--2">
+          {%- render 'orn-contact-input', field: 'company', type: 'text', section: section -%}
+          {%- render 'orn-contact-input', field: 'fullname', type: 'text', section: section -%}
+        </div>
+
+        <div class="orn-contact__row orn-contact__row--2">
+          {%- render 'orn-contact-input', field: 'email', type: 'email', section: section -%}
+          {%- render 'orn-contact-input',
+            field: 'phone',
+            type: 'tel',
+            section: section,
+            extra_attrs: 'inputmode="tel" @input="onPhoneInput($event)"'
+          -%}
+        </div>
+
+        <div class="orn-contact__row orn-contact__row--2">
+          {%- render 'orn-contact-select', field: 'select_1', section: section -%}
+          {%- render 'orn-contact-input', field: 'website', type: 'url', section: section -%}
+        </div>
+
+        <div class="orn-contact__row">
+          {%- render 'orn-contact-select', field: 'select_2', section: section -%}
+        </div>
+
+        <div class="orn-contact__row">
+          {%- render 'orn-contact-textarea', field: 'message', section: section -%}
+        </div>
+
+        {%- comment -%} hidden E.164 — keeps a clean +33XXXXXXXXX next to the visible value {%- endcomment -%}
+        <input type="hidden" name="contact[Phone E164]" :value="phoneE164">
+
+        {%- comment -%} Body composed in JS just before submit. {%- endcomment -%}
+        <textarea name="contact[body]" x-ref="bodyField" hidden></textarea>
+
+        <div class="orn-contact__actions">
+          <button
+            type="submit"
+            class="orn-contact__submit ornevo-btn ornevo-btn--{{ section.settings.submit_variant }}"
+            :disabled="submitting"
+          >
+            <span x-show="!submitting">{{ section.settings.submit_text }}</span>
+            <span x-show="submitting" x-cloak>…</span>
+          </button>
+          <p class="orn-contact__error-summary" role="alert" x-show="hasErrors" x-cloak>
+            {{ section.settings.error_summary_text }}
+          </p>
+        </div>
+
+      {%- endform -%}
+      </div>
+
+      {%- comment -%} Success state — server-side render + Alpine flag {%- endcomment -%}
+      <div
+        class="orn-contact__success"
+        x-show="success || {{ success_flag }}"
+        {% unless form.posted_successfully? %}x-cloak{% endunless %}
+        role="status"
+        aria-live="polite"
+      >
+        <h3 class="orn-contact__success-title">{{ section.settings.success_heading }}</h3>
+        <div class="orn-contact__success-body">{{ section.settings.success_message }}</div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Orn Contact form",
+  "tag": "section",
+  "class": "section section-orn-contact",
+  "enabled_on": {
+    "templates": ["index", "page"]
+  },
+  "settings": [
+    { "type": "header", "content": "General" },
+    {
+      "type": "text",
+      "id": "anchor_id",
+      "label": "Anchor id",
+      "default": "contacto",
+      "info": "URL hash target (e.g. #contacto). Sanitized via handleize."
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme_left",
+      "label": "Color scheme — left card",
+      "default": "scheme-2"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme_right",
+      "label": "Color scheme — right panel",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding_block_start",
+      "label": "Padding top (px)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_block_end",
+      "label": "Padding bottom (px)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 64
+    },
+
+    { "type": "header", "content": "Intro card (left)" },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "checkbox",
+      "id": "logo_show_desktop",
+      "label": "Show logo on desktop",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "label": "Logo height (px)",
+      "min": 16,
+      "max": 48,
+      "step": 2,
+      "default": 32
+    },
+    {
+      "type": "richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "<p>Un projet à<br>nous confier ?</p>"
+    },
+    {
+      "type": "text",
+      "id": "tag_pill_text",
+      "label": "Tag pill"
+    },
+    {
+      "type": "richtext",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "<p>Nous vous contactons sous 4h ouvrées.</p>"
+    },
+
+    { "type": "header", "content": "Field 1 — Full name" },
+    { "type": "text", "id": "fullname_label", "label": "Label", "default": "Nom" },
+    { "type": "text", "id": "fullname_placeholder", "label": "Placeholder" },
+    { "type": "checkbox", "id": "fullname_required", "label": "Required", "default": true },
+    { "type": "text", "id": "fullname_error_required", "label": "Error — required", "default": "Ce champ est obligatoire." },
+    { "type": "text", "id": "fullname_error_format", "label": "Error — format", "default": "Indiquez votre nom et prénom (lettres et espaces seulement, min. 3 caractères)." },
+
+    { "type": "header", "content": "Field 2 — Email" },
+    { "type": "text", "id": "email_label", "label": "Label", "default": "E-mail" },
+    { "type": "text", "id": "email_placeholder", "label": "Placeholder" },
+    { "type": "checkbox", "id": "email_required", "label": "Required", "default": true },
+    { "type": "text", "id": "email_error_required", "label": "Error — required", "default": "Ce champ est obligatoire." },
+    { "type": "text", "id": "email_error_format", "label": "Error — format", "default": "Adresse e-mail invalide (ex. : prenom@domaine.fr)." },
+
+    { "type": "header", "content": "Field 3 — Phone" },
+    { "type": "text", "id": "phone_label", "label": "Label", "default": "Numéro de téléphone" },
+    { "type": "text", "id": "phone_placeholder", "label": "Placeholder" },
+    { "type": "checkbox", "id": "phone_required", "label": "Required", "default": true },
+    { "type": "text", "id": "phone_error_required", "label": "Error — required", "default": "Ce champ est obligatoire." },
+    { "type": "text", "id": "phone_error_format", "label": "Error — format", "default": "Numéro invalide (7 à 15 chiffres)." },
+    { "type": "text", "id": "phone_country_code", "label": "Country code (E.164 prefix)", "default": "+33" },
+
+    { "type": "header", "content": "Field 4 — Company" },
+    { "type": "text", "id": "company_label", "label": "Label", "default": "Nom de l'entreprise" },
+    { "type": "text", "id": "company_placeholder", "label": "Placeholder" },
+    { "type": "checkbox", "id": "company_required", "label": "Required", "default": true },
+    { "type": "text", "id": "company_error_required", "label": "Error — required", "default": "Ce champ est obligatoire." },
+    { "type": "text", "id": "company_error_format", "label": "Error — format", "default": "Min. 2 caractères (lettres, chiffres, points et tirets autorisés)." },
+
+    { "type": "header", "content": "Field 5 — Website" },
+    { "type": "text", "id": "website_label", "label": "Label", "default": "Site web" },
+    { "type": "text", "id": "website_placeholder", "label": "Placeholder", "default": "https://" },
+    { "type": "checkbox", "id": "website_required", "label": "Required", "default": false },
+    { "type": "text", "id": "website_error_required", "label": "Error — required", "default": "Ce champ est obligatoire." },
+    { "type": "text", "id": "website_error_format", "label": "Error — format", "default": "URL invalide. Doit commencer par http:// ou https://." },
+
+    { "type": "header", "content": "Field 6 — Select 1" },
+    { "type": "text", "id": "select_1_label", "label": "Label", "default": "Objet de la demande" },
+    { "type": "text", "id": "select_1_placeholder", "label": "Placeholder", "default": "Sélectionnez…" },
+    { "type": "checkbox", "id": "select_1_required", "label": "Required", "default": false },
+    { "type": "text", "id": "select_1_error_required", "label": "Error — required", "default": "Ce champ est obligatoire." },
+    {
+      "type": "textarea",
+      "id": "select_1_options",
+      "label": "Options (one per line)",
+      "default": "Site web\nE-commerce\nSEO\nMarketing\nAutre",
+      "info": "One option per line. Empty lines are ignored."
+    },
+
+    { "type": "header", "content": "Field 7 — Select 2" },
+    { "type": "text", "id": "select_2_label", "label": "Label", "default": "Nombre d'employés" },
+    { "type": "text", "id": "select_2_placeholder", "label": "Placeholder", "default": "Sélectionnez…" },
+    { "type": "checkbox", "id": "select_2_required", "label": "Required", "default": false },
+    { "type": "text", "id": "select_2_error_required", "label": "Error — required", "default": "Ce champ est obligatoire." },
+    {
+      "type": "textarea",
+      "id": "select_2_options",
+      "label": "Options (one per line)",
+      "default": "1\n2 à 10\n11 à 50\n51 à 200\n200+",
+      "info": "One option per line."
+    },
+
+    { "type": "header", "content": "Field 8 — Message" },
+    { "type": "text", "id": "message_label", "label": "Label", "default": "Décrivez-nous votre projet" },
+    { "type": "text", "id": "message_placeholder", "label": "Placeholder" },
+    { "type": "checkbox", "id": "message_required", "label": "Required", "default": false },
+    { "type": "text", "id": "message_error_required", "label": "Error — required", "default": "Ce champ est obligatoire." },
+    { "type": "text", "id": "message_error_format", "label": "Error — format", "default": "Min. 10 caractères si vous renseignez ce champ." },
+    {
+      "type": "range",
+      "id": "message_max_chars",
+      "label": "Max characters",
+      "min": 200,
+      "max": 2000,
+      "step": 100,
+      "default": 1000
+    },
+
+    { "type": "header", "content": "Submit + success state" },
+    { "type": "text", "id": "submit_text", "label": "Submit text", "default": "Envoyer" },
+    {
+      "type": "select",
+      "id": "submit_variant",
+      "label": "Submit style",
+      "options": [
+        { "value": "primary", "label": "Primary" },
+        { "value": "secondary", "label": "Secondary" }
+      ],
+      "default": "primary"
+    },
+    { "type": "text", "id": "email_subject_prefix", "label": "Email subject", "default": "Nouveau contact – Ornevo" },
+    { "type": "inline_richtext", "id": "success_heading", "label": "Success heading", "default": "Merci, message bien reçu." },
+    { "type": "richtext", "id": "success_message", "label": "Success message", "default": "<p>Nous vous recontactons sous 4h ouvrées.</p>" },
+    { "type": "text", "id": "error_summary_text", "label": "Client error summary", "default": "Vérifiez les champs en rouge ci-dessus." },
+    { "type": "text", "id": "generic_server_error", "label": "Generic server error", "default": "Une erreur est survenue. Réessayez dans un instant." }
+  ],
+  "presets": [
+    {
+      "name": "Form de contacto",
+      "settings": {
+        "anchor_id": "contacto"
+      }
+    }
+  ]
+}
+{% endschema %}
