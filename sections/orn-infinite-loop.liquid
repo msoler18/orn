@@ -1,0 +1,82 @@
+<div
+  data-orn-infinite-loop-root
+  data-enabled="{{ section.settings.enabled }}"
+  data-disable-on-reduce-motion="{{ section.settings.disable_on_reduce_motion }}"
+  data-disable-below-breakpoint="{{ section.settings.disable_below_breakpoint }}"
+  data-boundary-buffer="{{ section.settings.boundary_buffer_px }}"
+  data-debug-overlay="{{ section.settings.debug_overlay }}"
+  hidden
+></div>
+
+{% schema %}
+{
+  "name": "Infinite loop",
+  "tag": "div",
+  "class": "orn-infinite-loop-section",
+  "enabled_on": {
+    "templates": ["page"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Infinite scroll loop"
+    },
+    {
+      "type": "paragraph",
+      "content": "Clona <main> y <footer> arriba y abajo del original y hace wrap del scrollY al cruzar los bordes (efecto kudanil.com). Sólo se ve en preview (no en theme editor)."
+    },
+    {
+      "type": "checkbox",
+      "id": "enabled",
+      "label": "Activar loop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "disable_on_reduce_motion",
+      "label": "Desactivar si prefers-reduced-motion",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "disable_below_breakpoint",
+      "label": "Desactivar bajo este ancho",
+      "min": 0,
+      "max": 1280,
+      "step": 16,
+      "unit": "px",
+      "default": 0,
+      "info": "0 = activado siempre. Útil para desactivar el efecto en mobile si no funciona bien."
+    },
+    {
+      "type": "range",
+      "id": "boundary_buffer_px",
+      "label": "Buffer del wrap",
+      "min": 8,
+      "max": 256,
+      "step": 8,
+      "unit": "px",
+      "default": 64,
+      "info": "Distancia desde el borde del clon a partir de la cual se dispara el wrap."
+    },
+    {
+      "type": "checkbox",
+      "id": "debug_overlay",
+      "label": "Mostrar overlay de debug",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "Infinite loop",
+      "settings": {
+        "enabled": true,
+        "disable_on_reduce_motion": true,
+        "disable_below_breakpoint": 0,
+        "boundary_buffer_px": 64,
+        "debug_overlay": false
+      }
+    }
+  ]
+}
+{% endschema %}

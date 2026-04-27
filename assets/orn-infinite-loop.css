@@ -1,0 +1,43 @@
+/*
+ * Ornevo — Infinite scroll loop defensive styles (ADR-0006 §6)
+ */
+
+/* Clones inertes — visualmente idénticos al original pero sin interactividad */
+.orn-loop-clone {
+  pointer-events: none; /* fallback if [inert] is not supported */
+}
+.orn-loop-clone * {
+  pointer-events: none;
+}
+
+/* En print, oculta los clones para no duplicar contenido */
+@media print {
+  .orn-loop-clone { display: none !important; }
+}
+
+/* Reduce flicker durante el wrap: si el theme define scroll-behavior: smooth global,
+   podría animar el wrap (rompería la ilusión). El JS hace scrollTo({behavior:'instant'})
+   pero por si acaso forzamos auto cuando hay clones. */
+html:has(.orn-loop-clone) {
+  scroll-behavior: auto;
+}
+
+/* Original wrapper sin estilos visuales — es un contenedor lógico */
+.orn-loop-original {
+  display: contents;
+}
+
+/* Debug overlay (toggleable desde el setting debug_overlay) */
+.orn-loop-debug {
+  position: fixed;
+  bottom: 8px;
+  right: 8px;
+  z-index: 99999;
+  background: rgba(0, 0, 0, 0.78);
+  color: #4EC0DE;
+  font: 12px/1.3 ui-monospace, Menlo, monospace;
+  padding: 8px 10px;
+  border-radius: 8px;
+  pointer-events: none;
+  white-space: pre;
+}

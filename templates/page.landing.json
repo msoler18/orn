@@ -9,6 +9,16 @@
  */
 {
   "sections": {
+    "orn-infinite-loop": {
+      "type": "orn-infinite-loop",
+      "settings": {
+        "enabled": true,
+        "disable_on_reduce_motion": true,
+        "disable_below_breakpoint": 0,
+        "boundary_buffer_px": 64,
+        "debug_overlay": false
+      }
+    },
     "main": {
       "type": "main-page",
       "blocks": {
@@ -191,5 +201,5 @@
       }
     }
   },
-  "order": ["main", "orn-services", "orn-contact-form"]
+  "order": ["orn-infinite-loop", "main", "orn-services", "orn-contact-form"]
 }
