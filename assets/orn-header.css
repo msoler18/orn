@@ -10,9 +10,12 @@
   z-index: 100;
 }
 
-.orn-header-wrapper[data-sticky='true'] {
+/* Sticky lives on #header-group (the only ancestor with viewport-height context).
+   Without this, position:sticky on .orn-header-wrapper has no room to stick because
+   its parent .shopify-section is content-bound. */
+#header-group:has(.orn-header-wrapper[data-sticky='true']) {
   position: sticky;
-  top: var(--orn-header-top-offset, 16px);
+  top: 0;
   z-index: 100;
 }
 
@@ -21,10 +24,6 @@
   justify-content: center;
   pointer-events: none;
   padding-top: var(--orn-header-top-offset, 16px);
-}
-
-.orn-header-wrapper[data-sticky='true'] .orn-header {
-  padding-top: 0;
 }
 
 .orn-header__shell {
