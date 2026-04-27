@@ -17,9 +17,9 @@
         "link-servicios": {
           "type": "link",
           "settings": {
-            "label": "Servicios",
+            "label": "Services",
             "target_kind": "anchor",
-            "anchor": "#servicios",
+            "anchor": "#services",
             "url": "",
             "open_in_new_tab": false
           }
