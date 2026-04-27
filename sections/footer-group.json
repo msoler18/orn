@@ -7,7 +7,7 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
- {
+{
   "type": "footer",
   "name": "t:names.footer",
   "sections": {
@@ -18,15 +18,21 @@
           "type": "_orn-footer-link-group",
           "settings": {
             "title": "Servicios",
-            "menu": "footer-servicios"
-          }
+            "menu": "",
+            "title_color": "",
+            "link_color": ""
+          },
+          "blocks": {}
         },
         "agencia": {
           "type": "_orn-footer-link-group",
           "settings": {
             "title": "Agencia",
-            "menu": "footer-agencia"
-          }
+            "menu": "",
+            "title_color": "",
+            "link_color": ""
+          },
+          "blocks": {}
         }
       },
       "block_order": [
@@ -36,8 +42,8 @@
       "name": "t:names.footer",
       "settings": {
         "cta_band_show": true,
-        "cta_band_color_scheme": "scheme-4",
-        "cta_band_heading": "<p>Lorem ipsum dolor sit amet,<br>consectetur adipiscing elit</p>",
+        "cta_band_color_scheme": "scheme-1",
+        "cta_band_heading": "<p>Lorem ipsum dolor sit amet,<br/>consectetur adipiscing elit</p>",
         "cta_band_subtitle": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>",
         "cta_band_button_text": "Lorem ipsum",
         "cta_band_button_anchor": "#contacto",
@@ -50,21 +56,32 @@
         "card_radius": 32,
         "card_inset": 24,
         "card_padding": 48,
-        "logo_height": 52,
+        "logo": "shopify://shop_images/Capa_1.svg",
+        "logo_height": 24,
         "logo_alt": "Ornevo",
         "contact_label": "Contacto",
         "contact_email": "contact@ornevo.fr",
+        "social_instagram_url": "",
+        "social_linkedin_url": "",
+        "social_facebook_url": "",
+        "social_twitter_url": "",
+        "social_youtube_url": "",
+        "social_tiktok_url": "",
         "tagline_show": true,
         "tagline_lead": "<p>Agencia digital en Normandía — web, marketing y e-commerce para</p>",
         "tagline_pill_text": "PYMES ambiciosas.",
-        "tagline_pill_bg": "#0F1720",
-        "tagline_pill_fg": "#FFFFFF",
+        "tagline_pill_bg": "#0f1720",
+        "tagline_pill_fg": "#ffffff",
         "tagline_pill_rotation": -3,
         "tagline_pill_animate": true,
         "tagline_alignment": "right",
         "copyright_text": "© {year} Ornevo",
         "legal_link_1_text": "Aviso legal",
+        "legal_link_1_url": "",
         "legal_link_2_text": "Política de privacidades",
+        "legal_link_2_url": "",
+        "legal_link_3_text": "",
+        "legal_link_3_url": "",
         "card_top_align": "split",
         "card_bottom_align": "split"
       }
