@@ -383,7 +383,7 @@
         "website_placeholder": "https://example.fr",
         "website_required": false,
         "website_error_required": "Ce champ est obligatoire",
-        "website_error_format": "URL invalide. Doit commencer par http:// ou https:// example https://example.fr",
+        "website_error_format": "URL invalide. Commencez par https:// (ex. : https://exemple.fr).",
         "select_1_label": "Vous êtes (poste)",
         "select_1_placeholder": "Sélectionnez…",
         "select_1_required": false,
