@@ -381,7 +381,7 @@
         "website_error_format": "URL invalide. Doit commencer par http:// ou https://",
         "select_1_label": "",
         "select_1_placeholder": "",
-        "select_1_required": true,
+        "select_1_required": false,
         "select_1_error_required": "",
         "select_1_options": "",
         "select_2_label": "Objet de la demande",
