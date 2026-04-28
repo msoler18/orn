@@ -386,7 +386,7 @@
         "website_error_format": "URL invalide. Doit commencer par http:// ou https:// example https://example.fr",
         "select_1_label": "Vous êtes (poste)",
         "select_1_placeholder": "Sélectionnez…",
-        "select_1_required": true,
+        "select_1_required": false,
         "select_1_error_required": "Ce champ est obligatoire.",
         "select_1_options": "Créateur d'entreprise\nFondateur\nDirecteur\nManager Departement\nFreelancer\nStagiaire\nAutre (Précisez dans la description)",
         "select_2_label": "Objet de la demande",
