@@ -201,6 +201,10 @@ window.ornContactForm = function ornContactForm(opts = {}) {
           // AJAX success — show in-place, no reload.
           this.success = true;
           this.submitting = false;
+          Object.keys(this.values).forEach((k) => { this.values[k] = ''; });
+          this.errors = {};
+          this.hasErrors = false;
+          this.phoneE164 = '';
         } else {
           // Unexpected response — fall back to native submit.
           this.submitting = false;
