@@ -38,11 +38,11 @@
   />
   {%- if indicator -%}
     <span class="orn-contact__indicator orn-contact__indicator--valid"
-      x-show="values.{{ field }} && !errors.{{ field }}"
+      x-show="values.{{ field }}.replace(/\D+/g,'').length >= 7 && !errors.{{ field }}"
       x-cloak
       aria-hidden="true">✓</span>
     <span class="orn-contact__indicator orn-contact__indicator--invalid"
-      x-show="values.{{ field }} && errors.{{ field }}"
+      x-show="values.{{ field }}.replace(/\D+/g,'').length >= 7 && errors.{{ field }}"
       x-cloak
       aria-hidden="true">✕</span>
   </div>
