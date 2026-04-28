@@ -68,53 +68,52 @@ window.ornContactForm = function ornContactForm(opts = {}) {
     validateField(field) {
       const v = (this.values[field] || '').toString().trim();
       const required = !!this.rules[field];
+      let fail = false;
       let err = '';
 
       if (!v) {
-        if (required) err = this._errorText(field, 'error_required');
+        if (required) { fail = true; err = this._errorText(field, 'error_required'); }
       } else {
         switch (field) {
           case 'fullname':
-            if (
-              v.length < 3 ||
-              !this._re.fullname.test(v) ||
-              !/\s/.test(v)
-            ) {
-              err = this._errorText(field, 'error_format');
+            if (v.length < 3 || !this._re.fullname.test(v) || !/\s/.test(v)) {
+              fail = true; err = this._errorText(field, 'error_format');
             }
             break;
           case 'email':
             if (!this._re.email.test(v)) {
-              err = this._errorText(field, 'error_format');
+              fail = true; err = this._errorText(field, 'error_format');
             }
             break;
           case 'phone': {
             const digits = v.replace(this._re.phoneNonDigits, '');
-            if (digits.length < 7 || digits.length > 15) {
-              err = this._errorText(field, 'error_format');
-            } else if (digits.startsWith('0') && !/^0[1-9]/.test(digits)) {
-              err = this._errorText(field, 'error_format');
+            if (
+              digits.length < 7 ||
+              digits.length > 15 ||
+              (digits.startsWith('0') && !/^0[1-9]/.test(digits))
+            ) {
+              fail = true; err = this._errorText(field, 'error_format');
             }
             break;
           }
           case 'company':
             if (v.length < 2 || !this._re.company.test(v)) {
-              err = this._errorText(field, 'error_format');
+              fail = true; err = this._errorText(field, 'error_format');
             }
             break;
           case 'website':
             if (!this._re.website.test(v)) {
-              err = this._errorText(field, 'error_format');
+              fail = true; err = this._errorText(field, 'error_format');
             }
             break;
           case 'extra_1':
             if (v.length < 2) {
-              err = this._errorText(field, 'error_format');
+              fail = true; err = this._errorText(field, 'error_format');
             }
             break;
           case 'message':
             if (v.length < 10) {
-              err = this._errorText(field, 'error_format');
+              fail = true; err = this._errorText(field, 'error_format');
             }
             break;
           // selects: no format validation, only required
@@ -123,11 +122,13 @@ window.ornContactForm = function ornContactForm(opts = {}) {
         }
       }
 
-      if (err) this.errors[field] = err;
+      // err may be blank if the theme setting is not configured — use a truthy
+      // sentinel so the indicator and border still reflect the invalid state.
+      if (fail) this.errors[field] = err || ' ';
       else delete this.errors[field];
       // trigger reactivity on Alpine
       this.errors = { ...this.errors };
-      return !err;
+      return !fail;
     },
 
     /* ----- validate-all ----- */
