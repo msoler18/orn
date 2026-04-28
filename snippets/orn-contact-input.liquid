@@ -20,6 +20,7 @@
   <label class="orn-contact__label" for="{{ id }}">
     {{ label }}{%- if required -%}<span class="orn-contact__req" aria-hidden="true">*</span>{%- endif -%}
   </label>
+  {%- if indicator -%}<div class="orn-contact__input-wrap">{%- endif -%}
   <input
     type="{{ type }}"
     id="{{ id }}"
@@ -35,6 +36,17 @@
     @blur="validateField('{{ field }}')"
     {{ extra_attrs }}
   />
+  {%- if indicator -%}
+    <span class="orn-contact__indicator orn-contact__indicator--valid"
+      x-show="values.{{ field }} && !errors.{{ field }}"
+      x-cloak
+      aria-hidden="true">✓</span>
+    <span class="orn-contact__indicator orn-contact__indicator--invalid"
+      x-show="values.{{ field }} && errors.{{ field }}"
+      x-cloak
+      aria-hidden="true">✕</span>
+  </div>
+  {%- endif -%}
   <p
     class="orn-contact__error"
     id="{{ id }}-error"

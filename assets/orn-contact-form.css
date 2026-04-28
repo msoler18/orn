@@ -13,6 +13,7 @@
   scroll-margin-top: var(--header-height, 80px);
   padding-block: var(--orn-contact-pt, 64px) var(--orn-contact-pb, 64px);
   --orn-contact-error: #C0392B;
+  --orn-contact-valid: #27AE60;
   --orn-contact-accent: var(--color-accent, #4ec0de);
 }
 
@@ -202,6 +203,25 @@
   font-size: 0.875rem;
   opacity: 0.6;
 }
+
+/* ---------- Phone valid/invalid indicator ---------- */
+.orn-contact__input-wrap {
+  position: relative;
+}
+.orn-contact__input-wrap .orn-contact__input {
+  padding-right: 36px;
+}
+.orn-contact__indicator {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.9rem;
+  line-height: 1;
+  pointer-events: none;
+}
+.orn-contact__indicator--valid  { color: var(--orn-contact-valid, #27AE60); }
+.orn-contact__indicator--invalid { color: var(--orn-contact-error, #C0392B); }
 
 /* Error message */
 .orn-contact__error {

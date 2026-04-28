@@ -165,6 +165,15 @@ window.ornContactForm = function ornContactForm(opts = {}) {
         e164 = this.countryCode + digits;
       }
       this.phoneE164 = e164;
+
+      // Real-time indicator: validate once enough digits are present,
+      // clear the error while the number is still too short to judge.
+      if (digits.length >= 7) {
+        this.validateField('phone');
+      } else {
+        delete this.errors.phone;
+        this.errors = { ...this.errors };
+      }
     },
 
     /* ----- submit ----- */
