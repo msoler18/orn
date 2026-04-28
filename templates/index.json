@@ -396,7 +396,7 @@
         "select_2_options": "Site web\nE-commerce\nSEO\nMarketing\nAutre",
         "message_label": "Décrivez-nous votre projet",
         "message_placeholder": "Votre demande sous 1000 cáracteres",
-        "message_required": false,
+        "message_required": true,
         "message_error_required": "Ce champ est obligatoire",
         "message_error_format": "Min. 10 caractères si vous renseignez ce champ",
         "message_max_chars": 1000,
