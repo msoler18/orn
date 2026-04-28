@@ -27,7 +27,7 @@
     class="orn-contact__input"
     x-model="values.{{ field }}"
     placeholder="{{ placeholder | escape }}"
-    {% if required %}aria-required="true"{% endif %}
+    {% if required %}required aria-required="true"{% endif %}
     :aria-invalid="errors.{{ field }} ? 'true' : 'false'"
     :aria-describedby="errors.{{ field }} ? '{{ id }}-error' : null"
     autocomplete="{{ autocomplete | default: 'off' }}"

@@ -22,7 +22,7 @@
     class="orn-contact__select"
     x-model="values.{{ field }}"
     autocomplete="off"
-    {% if required %}aria-required="true"{% endif %}
+    {% if required %}required aria-required="true"{% endif %}
     :aria-invalid="errors.{{ field }} ? 'true' : 'false'"
     :aria-describedby="errors.{{ field }} ? '{{ id }}-error' : null"
     @blur="validateField('{{ field }}')"
