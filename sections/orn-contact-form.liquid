@@ -20,6 +20,7 @@
       phone:    {{ section.settings.phone_required }},
       company:  {{ section.settings.company_required }},
       website:  {{ section.settings.website_required }},
+      extra_1:  {{ section.settings.extra_1_required }},
       select_1: {{ section.settings.select_1_required }},
       select_2: {{ section.settings.select_2_required }},
       message:  {{ section.settings.message_required }}
@@ -92,7 +93,7 @@
         >
 
         {%- comment -%} Error-copy templates: read by JS via [data-error-source="<field>_<suffix>"] {%- endcomment -%}
-        {%- assign field_keys = 'fullname,email,phone,company,website,select_1,select_2,message' | split: ',' -%}
+        {%- assign field_keys = 'fullname,email,phone,company,website,extra_1,select_1,select_2,message' | split: ',' -%}
         {%- assign error_suffixes = 'error_required,error_format' | split: ',' -%}
         {%- for f in field_keys -%}
           {%- for suffix in error_suffixes -%}
@@ -119,7 +120,10 @@
           -%}
         </div>
 
-        <div class="orn-contact__row">
+        <div class="orn-contact__row{% if section.settings.extra_1_label != blank %} orn-contact__row--2{% endif %}">
+          {%- if section.settings.extra_1_label != blank -%}
+            {%- render 'orn-contact-input', field: 'extra_1', type: 'text', section: section -%}
+          {%- endif -%}
           {%- render 'orn-contact-input', field: 'website', type: 'url', section: section -%}
         </div>
 
@@ -300,7 +304,14 @@
     { "type": "text", "id": "website_error_required", "label": "Error — required", "default": "Ce champ est obligatoire." },
     { "type": "text", "id": "website_error_format", "label": "Error — format", "default": "URL invalide. Doit commencer par http:// ou https://." },
 
-    { "type": "header", "content": "Field 6 — Select 1" },
+    { "type": "header", "content": "Field 6 — Free text" },
+    { "type": "text", "id": "extra_1_label", "label": "Label", "info": "Leave blank to hide this field." },
+    { "type": "text", "id": "extra_1_placeholder", "label": "Placeholder" },
+    { "type": "checkbox", "id": "extra_1_required", "label": "Required", "default": false },
+    { "type": "text", "id": "extra_1_error_required", "label": "Error — required", "default": "Ce champ est obligatoire." },
+    { "type": "text", "id": "extra_1_error_format", "label": "Error — format", "default": "Min. 2 caractères." },
+
+    { "type": "header", "content": "Field 7 — Select 1" },
     { "type": "text", "id": "select_1_label", "label": "Label", "default": "Objet de la demande" },
     { "type": "text", "id": "select_1_placeholder", "label": "Placeholder", "default": "Sélectionnez…" },
     { "type": "checkbox", "id": "select_1_required", "label": "Required", "default": false },

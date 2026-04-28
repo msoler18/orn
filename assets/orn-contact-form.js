@@ -18,6 +18,7 @@ window.ornContactForm = function ornContactForm(opts = {}) {
       phone: '',
       company: '',
       website: '',
+      extra_1: '',
       select_1: '',
       select_2: '',
       message: '',
@@ -99,6 +100,11 @@ window.ornContactForm = function ornContactForm(opts = {}) {
             break;
           case 'website':
             if (!this._re.website.test(v)) {
+              err = this._errorText(field, 'error_format');
+            }
+            break;
+          case 'extra_1':
+            if (v.length < 2) {
               err = this._errorText(field, 'error_format');
             }
             break;
@@ -187,6 +193,7 @@ window.ornContactForm = function ornContactForm(opts = {}) {
         `Email: ${this.values.email}`,
         phoneLine,
         `Sitio web: ${this.values.website || '—'}`,
+        `Extra: ${this.values.extra_1 || '—'}`,
         `Select 1: ${this.values.select_1 || '—'}`,
         `Select 2: ${this.values.select_2 || '—'}`,
         '',
