@@ -78,7 +78,7 @@
         {%- endif -%}
 
         {%- comment -%} subject prefix → Shopify uses `contact[subject]` as the email subject {%- endcomment -%}
-        <input type="hidden" name="contact[subject]" value="{{ section.settings.email_subject_prefix | escape }}">
+        <input type="hidden" name="contact[Sujet de la demande]" value="{{ section.settings.email_subject_prefix | escape }}">
 
         {%- comment -%} Honeypot: bots fill this; humans never see it. JS aborts submit if non-empty. {%- endcomment -%}
         <input
