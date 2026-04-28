@@ -393,7 +393,7 @@
         "select_2_placeholder": "Sélectionnez…",
         "select_2_required": true,
         "select_2_error_required": "Ce champ est obligatoire.",
-        "select_2_options": "Site web\nE-commerce\nSEO\nMarketing\nAutre",
+        "select_2_options": "Site web — création ou refonte\nBoutique e-commerce  — création ou refonte\nApplication mobile\nMarketing digital (SEO, Ads, réseaux sociaux)\nAudit, conseil ou design\nAutre demande",
         "message_label": "Décrivez-nous votre projet",
         "message_placeholder": "Votre demande sous 1000 cáracteres",
         "message_required": true,
