@@ -29,13 +29,15 @@ window.ornContactForm = function ornContactForm(opts = {}) {
 
     /* ----- lifecycle ----- */
     init() {
-      // If Shopify rendered the page after a successful POST, the URL carries
-      // ?contact_posted=true. Even if Liquid-side already mounted the success
-      // block, set the Alpine flag so re-hydration / SPA-style nav stays in sync.
       try {
         const params = new URLSearchParams(location.search);
         if (params.get('contact_posted') === 'true') {
           this.success = true;
+          // Fallback path: page reloaded after native submit — scroll section into view
+          // once Alpine has updated the DOM (success block visible, form hidden).
+          this.$nextTick(() => {
+            this.$el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          });
         }
       } catch (_) {
         // ignore — older browsers / no window
@@ -163,26 +165,8 @@ window.ornContactForm = function ornContactForm(opts = {}) {
       this.phoneE164 = e164;
     },
 
-    /* ----- submit ----- */
-    onSubmit(ev) {
-      // Honeypot: if the hidden input is filled, abort silently.
-      if ((this.values.honey || '').trim() !== '') {
-        ev.preventDefault();
-        return;
-      }
-
-      const ok = this.validateAll();
-      if (!ok) {
-        ev.preventDefault();
-        const firstErr = Object.keys(this.errors)[0];
-        if (firstErr) {
-          const target = document.getElementById(`orn-contact-${firstErr}`);
-          if (target && typeof target.focus === 'function') target.focus();
-        }
-        return;
-      }
-
-      // Compose a human-readable email body.
+    /* ----- body composer ----- */
+    _composeBody() {
       const phoneLine =
         `Teléfono: ${this.values.phone}` +
         (this.phoneE164 ? `  (${this.phoneE164})` : '');
@@ -204,9 +188,55 @@ window.ornContactForm = function ornContactForm(opts = {}) {
       if (this.$refs && this.$refs.bodyField) {
         this.$refs.bodyField.value = body;
       }
+    },
 
+    /* ----- submit ----- */
+    async onSubmit(ev) {
+      // Honeypot: abort silently if filled.
+      if ((this.values.honey || '').trim() !== '') {
+        ev.preventDefault();
+        return;
+      }
+
+      const ok = this.validateAll();
+      if (!ok) {
+        ev.preventDefault();
+        const firstErr = Object.keys(this.errors)[0];
+        if (firstErr) {
+          const target = document.getElementById(`orn-contact-${firstErr}`);
+          if (target && typeof target.focus === 'function') target.focus();
+        }
+        return;
+      }
+
+      // Prevent native submit — we attempt AJAX first.
+      ev.preventDefault();
+      this._composeBody();
       this.submitting = true;
-      // Allow native submit to proceed.
+
+      const form = /** @type {HTMLFormElement} */ (ev.target);
+
+      try {
+        const response = await fetch('/contact', {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { Accept: 'text/html' },
+        });
+
+        if (response.url.includes('contact_posted=true')) {
+          // AJAX success — show in-place, no reload.
+          this.success = true;
+          this.submitting = false;
+        } else {
+          // Unexpected response — fall back to native submit.
+          this.submitting = false;
+          form.submit();
+        }
+      } catch (_) {
+        // Network error — fall back to native submit.
+        this.submitting = false;
+        form.submit();
+      }
     },
   };
 };
