@@ -92,6 +92,8 @@ window.ornContactForm = function ornContactForm(opts = {}) {
             const digits = v.replace(this._re.phoneNonDigits, '');
             if (digits.length < 7 || digits.length > 15) {
               err = this._errorText(field, 'error_format');
+            } else if (digits.startsWith('0') && !/^0[1-9]/.test(digits)) {
+              err = this._errorText(field, 'error_format');
             }
             break;
           }
