@@ -30,6 +30,7 @@
     {% if required %}aria-required="true"{% endif %}
     :aria-invalid="errors.{{ field }} ? 'true' : 'false'"
     :aria-describedby="errors.{{ field }} ? '{{ id }}-error' : null"
+    autocomplete="{{ autocomplete | default: 'off' }}"
     @blur="validateField('{{ field }}')"
     {{ extra_attrs }}
   />

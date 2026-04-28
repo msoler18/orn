@@ -106,15 +106,16 @@
         {%- endfor -%}
 
         <div class="orn-contact__row orn-contact__row--2">
-          {%- render 'orn-contact-input', field: 'company', type: 'text', section: section -%}
-          {%- render 'orn-contact-input', field: 'fullname', type: 'text', section: section -%}
+          {%- render 'orn-contact-input', field: 'company', type: 'text', autocomplete: 'organization', section: section -%}
+          {%- render 'orn-contact-input', field: 'fullname', type: 'text', autocomplete: 'name', section: section -%}
         </div>
 
         <div class="orn-contact__row orn-contact__row--2">
-          {%- render 'orn-contact-input', field: 'email', type: 'email', section: section -%}
+          {%- render 'orn-contact-input', field: 'email', type: 'email', autocomplete: 'email', section: section -%}
           {%- render 'orn-contact-input',
             field: 'phone',
             type: 'tel',
+            autocomplete: 'tel',
             section: section,
             extra_attrs: 'inputmode="tel" @input="onPhoneInput($event)"'
           -%}
@@ -122,9 +123,9 @@
 
         <div class="orn-contact__row{% if section.settings.extra_1_label != blank %} orn-contact__row--2{% endif %}">
           {%- if section.settings.extra_1_label != blank -%}
-            {%- render 'orn-contact-input', field: 'extra_1', type: 'text', section: section -%}
+            {%- render 'orn-contact-input', field: 'extra_1', type: 'text', autocomplete: 'off', section: section -%}
           {%- endif -%}
-          {%- render 'orn-contact-input', field: 'website', type: 'url', section: section -%}
+          {%- render 'orn-contact-input', field: 'website', type: 'url', autocomplete: 'url', section: section -%}
         </div>
 
         {%- if section.settings.select_1_label != blank -%}
