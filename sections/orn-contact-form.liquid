@@ -144,9 +144,6 @@
         {%- comment -%} hidden E.164 — keeps a clean +33XXXXXXXXX next to the visible value {%- endcomment -%}
         <input type="hidden" name="contact[Phone E164]" :value="phoneE164">
 
-        {%- comment -%} Body composed in JS just before submit. {%- endcomment -%}
-        <textarea name="contact[body]" x-ref="bodyField" hidden></textarea>
-
         <div class="orn-contact__actions">
           <button
             type="submit"

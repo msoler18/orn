@@ -165,31 +165,6 @@ window.ornContactForm = function ornContactForm(opts = {}) {
       this.phoneE164 = e164;
     },
 
-    /* ----- body composer ----- */
-    _composeBody() {
-      const phoneLine =
-        `Teléfono: ${this.values.phone}` +
-        (this.phoneE164 ? `  (${this.phoneE164})` : '');
-
-      const body = [
-        `Empresa: ${this.values.company}`,
-        `Nombre: ${this.values.fullname}`,
-        `Email: ${this.values.email}`,
-        phoneLine,
-        `Sitio web: ${this.values.website || '—'}`,
-        `Extra: ${this.values.extra_1 || '—'}`,
-        `Select 1: ${this.values.select_1 || '—'}`,
-        `Select 2: ${this.values.select_2 || '—'}`,
-        '',
-        'Mensaje:',
-        this.values.message || '—',
-      ].join('\n');
-
-      if (this.$refs && this.$refs.bodyField) {
-        this.$refs.bodyField.value = body;
-      }
-    },
-
     /* ----- submit ----- */
     async onSubmit(ev) {
       // Honeypot: abort silently if filled.
@@ -211,7 +186,6 @@ window.ornContactForm = function ornContactForm(opts = {}) {
 
       // Prevent native submit — we attempt AJAX first.
       ev.preventDefault();
-      this._composeBody();
       this.submitting = true;
 
       const form = /** @type {HTMLFormElement} */ (ev.target);
