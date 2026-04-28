@@ -106,8 +106,8 @@
         {%- endfor -%}
 
         <div class="orn-contact__row orn-contact__row--2">
-          {%- render 'orn-contact-input', field: 'company', type: 'text', autocomplete: 'organization', section: section -%}
-          {%- render 'orn-contact-input', field: 'fullname', type: 'text', autocomplete: 'name', section: section -%}
+          {%- render 'orn-contact-input', field: 'company', type: 'text', autocomplete: 'organization', minlength: 2, section: section -%}
+          {%- render 'orn-contact-input', field: 'fullname', type: 'text', autocomplete: 'name', minlength: 3, section: section -%}
         </div>
 
         <div class="orn-contact__row orn-contact__row--2">
