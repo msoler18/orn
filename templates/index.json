@@ -370,7 +370,7 @@
         "email_error_format": "Adresse e-mail invalide (ex. : prenom@domaine.fr)",
         "phone_label": "Numéro de téléphone",
         "phone_placeholder": "01 23 45 67 89",
-        "phone_required": true,
+        "phone_required": false,
         "phone_error_required": "Ce champ est obligatoire",
         "phone_error_format": "Numéro invalide (7 à 15 chiffres)",
         "phone_country_code": "+33",
