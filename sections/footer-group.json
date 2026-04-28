@@ -17,8 +17,8 @@
         "servicios": {
           "type": "_orn-footer-link-group",
           "settings": {
-            "title": "Servicios",
-            "menu": "",
+            "title": "Services",
+            "menu": "footer",
             "title_color": "",
             "link_color": ""
           },
@@ -28,7 +28,7 @@
           "type": "_orn-footer-link-group",
           "settings": {
             "title": "Agencia",
-            "menu": "",
+            "menu": "agence",
             "title_color": "",
             "link_color": ""
           },
