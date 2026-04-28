@@ -31,11 +31,11 @@
             "cta1_icon_svg": "",
             "cta1_variant": "primary",
             "cta1_new_tab": false,
-            "cta2_text": "",
-            "cta2_url": "",
+            "cta2_text": "Démarrer mon projet",
+            "cta2_url": "#contact",
             "cta2_icon_svg": "",
             "cta2_variant": "secondary",
-            "cta2_new_tab": false
+            "cta2_new_tab": true
           },
           "blocks": {}
         },
