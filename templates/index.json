@@ -388,7 +388,7 @@
         "select_1_placeholder": "Sélectionnez…",
         "select_1_required": false,
         "select_1_error_required": "Ce champ est obligatoire.",
-        "select_1_options": "Créateur d'entreprise\nFondateur\nDirecteur\nManager Departement\nFreelancer\nStagiaire\nAutre (Précisez dans la description)",
+        "select_1_options": "Dirigeant·e / Fondateur·rice\nDirecteur·rice marketing\nDirecteur·rice e-commerce\nResponsable communication / digital\nChef de projet\nIndépendant·e / Freelance\nService achats\nAutre",
         "select_2_label": "Objet de la demande",
         "select_2_placeholder": "Sélectionnez…",
         "select_2_required": true,
