@@ -119,10 +119,15 @@
           -%}
         </div>
 
-        <div class="orn-contact__row orn-contact__row--2">
-          {%- render 'orn-contact-select', field: 'select_1', section: section -%}
+        <div class="orn-contact__row">
           {%- render 'orn-contact-input', field: 'website', type: 'url', section: section -%}
         </div>
+
+        {%- if section.settings.select_1_label != blank -%}
+          <div class="orn-contact__row">
+            {%- render 'orn-contact-select', field: 'select_1', section: section -%}
+          </div>
+        {%- endif -%}
 
         <div class="orn-contact__row">
           {%- render 'orn-contact-select', field: 'select_2', section: section -%}
