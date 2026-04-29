@@ -147,19 +147,11 @@
   outline-offset: 2px;
 }
 
-/* Tab label (text — visible on desktop) */
-.orn-services__tab-label {
-  display: block;
-  font-family: var(--font-body--family);
-  font-weight: 600;
-  font-size: clamp(0.9375rem, 1.2vw, 1.0625rem);
-  line-height: 1;
-  letter-spacing: 0.01em;
-}
-
-/* Tab number (visible only on mobile via media query below) */
-.orn-services__tab-number {
-  display: none;
+/* Tab badge — number text or SVG icon, visible on all breakpoints */
+.orn-services__tab-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   font-family: var(--font-heading--family);
   font-weight: 700;
   font-size: clamp(1.25rem, 2vw, 1.75rem);
@@ -167,10 +159,10 @@
   letter-spacing: -0.01em;
 }
 
-.orn-services__tab-number img {
+.orn-services__tab-badge img {
   display: block;
   width: auto;
-  height: 1.5rem;
+  height: 2rem;
   object-fit: contain;
 }
 
@@ -423,15 +415,9 @@
     min-height: 48px;
   }
 
-  /* Toggle: hide text label, show number on mobile */
-  .orn-services__tab-label {
-    display: none;
-  }
-
-  .orn-services__tab-number {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+  /* Reduce icon height on mobile */
+  .orn-services__tab-badge img {
+    height: 1.5rem;
   }
 
   /* Show pill progress bar only on mobile (when there's >1 tab) */

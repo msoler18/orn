@@ -105,13 +105,12 @@
             @click="goTo({{ idx }})"
             @keydown="onTabKey($event, {{ idx }})"
           >
-            <span class="orn-services__tab-label">{{ tab_label }}</span>
-            <span class="orn-services__tab-number" aria-hidden="true">
+            <span class="orn-services__tab-badge" aria-hidden="true">
               {%- if block.settings.tab_icon_number != blank -%}
                 {{
                   block.settings.tab_icon_number
-                  | image_url: width: 48
-                  | image_tag: alt: '', loading: 'lazy'
+                  | image_url: width: 64
+                  | image_tag: alt: '', loading: 'eager'
                 }}
               {%- else -%}
                 {{ num }}
