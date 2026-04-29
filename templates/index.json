@@ -30,7 +30,7 @@
             "cta1_url": "#contact",
             "cta1_variant": "primary",
             "cta1_new_tab": false,
-            "cta2_text": "Démarrer mon projet",
+            "cta2_text": "",
             "cta2_url": "#contact",
             "cta2_variant": "secondary",
             "cta2_new_tab": true
@@ -115,7 +115,7 @@
             "panel_title": "Conseil & Stratégie",
             "panel_heading_level": "h3",
             "panel_description": "<p>Avant de coder ou de designer, on comprend.</p>",
-            "panel_image": "shopify://shop_images/01-conseil.png",
+            "panel_image": "shopify://shop_images/01-conseil_edfc6265-3be2-4375-a43d-fdd92e1337aa.png",
             "item_1_text": "<p>Audit digital (SEO, UX, performance)</p>",
             "item_1_cta_text": "",
             "item_1_cta_url": "",
