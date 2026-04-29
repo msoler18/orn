@@ -36,6 +36,7 @@
     {%- comment -%} ── Card izquierda ── {%- endcomment -%}
     <aside class="orn-contact__intro color-{{ section.settings.color_scheme_left }}">
       {%- if section.settings.logo != blank -%}
+        {%- assign logo_style = 'height:' | append: section.settings.logo_height | append: 'px;width:auto;' -%}
         <div class="orn-contact__logo {% unless section.settings.logo_show_desktop %}orn-contact__logo--mobile-only{% endunless %}">
           {{
             section.settings.logo
@@ -43,7 +44,7 @@
             | image_tag:
               alt: 'Ornevo',
               loading: 'lazy',
-              style: 'height:' | append: section.settings.logo_height | append: 'px;width:auto;'
+              style: logo_style
           }}
         </div>
       {%- endif -%}
