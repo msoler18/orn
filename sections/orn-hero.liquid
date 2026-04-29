@@ -55,7 +55,8 @@
       type="button"
       class="orn-hero__play"
       @click="togglePlay()"
-      :aria-label="playing ? 'Pausar video' : 'Reproducir video'"
+      :aria-label="playing ? 'Mettre la vidéo en pause' : 'Lancer la lecture'"
+      :aria-pressed="String(playing)"
     >
       <span class="orn-hero__play-rings" aria-hidden="true">
         <span class="orn-hero__play-ring"></span>
