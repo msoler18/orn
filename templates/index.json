@@ -116,6 +116,7 @@
             "panel_heading_level": "h3",
             "panel_description": "<p>Avant de coder ou de designer, on comprend.</p>",
             "panel_image": "shopify://shop_images/01-conseil.png",
+            "item_1_icon": "shopify://shop_images/checkmark-option-a.svg",
             "item_1_text": "<p>Audit digital (SEO, UX, performance)</p>",
             "item_1_cta_text": "",
             "item_1_cta_url": "",
@@ -337,9 +338,9 @@
         "nav_active_text": "#ffffff",
         "nav_inactive_text": "#000000",
         "flash_color": "#e1edf5",
-        "item_bullet_bg": "#0f1720",
-        "progress_active": "",
-        "progress_inactive": ""
+        "item_bullet_bg": "#e6e6e6",
+        "progress_active": "#000000",
+        "progress_inactive": "#e6e6e6"
       }
     },
     "orn_contact_form_YCnnGi": {
