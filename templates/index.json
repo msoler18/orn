@@ -110,7 +110,6 @@
           "type": "tab",
           "settings": {
             "tab_label_desktop": "Conseil & Stratégie",
-            "tab_icon_number": "shopify://shop_images/Capa_1_1.svg",
             "panel_title": "Conseil & Stratégie",
             "panel_heading_level": "h3",
             "panel_description": "<p>Avant de coder ou de designer, on comprend.</p>",
@@ -380,8 +379,8 @@
         "website_required": false,
         "website_error_required": "Ce champ est obligatoire",
         "website_error_format": "URL invalide. Commencez par https:// (ex. : https://exemple.fr).",
-        "extra_1_label": "",
-        "extra_1_placeholder": "",
+        "extra_1_label": "Secteur d'activité",
+        "extra_1_placeholder": "Texte libre",
         "extra_1_required": false,
         "extra_1_error_required": "Ce champ est obligatoire.",
         "extra_1_error_format": "Min. 2 caractères.",
