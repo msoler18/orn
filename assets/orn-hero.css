@@ -309,7 +309,13 @@
 /* ---------- Title sizing on mobile (spec: 3 lines desktop / 5+ lines mobile OK) ---------- */
 @media (max-width: 749px) {
   .orn-hero__title      { font-size: clamp(2rem, 9vw, 3rem); max-width: 100%; }
-  .orn-hero__description{ font-size: 1rem; }
+  .orn-hero__description{
+    font-size: 1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
   .orn-hero__content    { padding-bottom: calc(var(--orn-hero-content-pad-y) + 6rem); }
   .orn-hero__nav        { bottom: 1.5rem; }
 }
