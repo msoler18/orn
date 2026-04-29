@@ -92,6 +92,7 @@
           sizes="100vw"
           alt=""
           loading="{% if block.settings.is_first_slide %}eager{% else %}lazy{% endif %}"
+          fetchpriority="{% if block.settings.is_first_slide %}high{% else %}low{% endif %}"
           width="{{ block.settings.image_desktop.width }}"
           height="{{ block.settings.image_desktop.height }}"
         >
@@ -109,6 +110,7 @@
           sizes="100vw"
           alt=""
           loading="{% if block.settings.is_first_slide %}eager{% else %}lazy{% endif %}"
+          fetchpriority="{% if block.settings.is_first_slide %}high{% else %}low{% endif %}"
           width="{{ block.settings.image_mobile.width }}"
           height="{{ block.settings.image_mobile.height }}"
         >
