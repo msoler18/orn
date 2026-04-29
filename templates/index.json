@@ -44,7 +44,7 @@
             "is_first_slide": false,
             "title": "Votre présence digitale, amplifiée en Normandie",
             "description": "<p>Sites web, e-commerce, marketing digital — ancrés à Caen, ouverts au monde</p>",
-            "text_color": "",
+            "text_color": "#ffffff",
             "overlay_color_start": "#0f1720",
             "overlay_color_end": "#0d4f4a",
             "youtube_desktop": "",
