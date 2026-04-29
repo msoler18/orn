@@ -67,6 +67,7 @@
 
           <div class="orn-footer__brand" data-orn-reveal="fade-up">
             {%- if section.settings.logo != blank -%}
+              {%- assign logo_style = 'height:' | append: section.settings.logo_height | append: 'px;width:auto;' -%}
               <a href="{{ routes.root_url }}" class="orn-footer__logo" aria-label="{{ section.settings.logo_alt | default: shop.name | escape }}">
                 {{
                   section.settings.logo
@@ -74,7 +75,7 @@
                   | image_tag:
                     alt: section.settings.logo_alt,
                     loading: 'lazy',
-                    style: 'height:' | append: section.settings.logo_height | append: 'px;width:auto;'
+                    style: logo_style
                 }}
               </a>
             {%- endif -%}
