@@ -87,7 +87,9 @@
             {{ block.settings.image_desktop | image_url: width: 800 }} 800w,
             {{ block.settings.image_desktop | image_url: width: 1200 }} 1200w,
             {{ block.settings.image_desktop | image_url: width: 1800 }} 1800w,
-            {{ block.settings.image_desktop | image_url: width: 2400 }} 2400w
+            {{ block.settings.image_desktop | image_url: width: 2400 }} 2400w,
+            {{ block.settings.image_desktop | image_url: width: 2880 }} 2880w,
+            {{ block.settings.image_desktop | image_url: width: 3840 }} 3840w
           "
           sizes="100vw"
           alt=""
@@ -105,7 +107,8 @@
           srcset="
             {{ block.settings.image_mobile | image_url: width: 600 }} 600w,
             {{ block.settings.image_mobile | image_url: width: 900 }} 900w,
-            {{ block.settings.image_mobile | image_url: width: 1200 }} 1200w
+            {{ block.settings.image_mobile | image_url: width: 1200 }} 1200w,
+            {{ block.settings.image_mobile | image_url: width: 1800 }} 1800w
           "
           sizes="100vw"
           alt=""
