@@ -55,6 +55,8 @@
   <div
     class="orn-hero__slide"
     :class="{ 'is-active': active === slideIdxOf($el) }"
+    :aria-hidden="String(active !== slideIdxOf($el))"
+    :inert="active !== slideIdxOf($el)"
     data-has-video="{% if has_video_desktop %}true{% else %}false{% endif %}"
     data-yt-desktop="{{ yt_desktop_id }}"
     data-yt-mobile="{{ yt_mobile_id }}"

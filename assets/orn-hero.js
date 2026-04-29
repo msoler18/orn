@@ -91,9 +91,12 @@
       slideIdxOf(el) {
         const slide = el && el.closest ? el.closest('.orn-hero__slide') : null;
         if (!slide) return -1;
-        const slides = slide.parentElement
-          ? slide.parentElement.querySelectorAll('.orn-hero__slide')
-          : [];
+        // Walk up to .orn-hero__slides instead of using parentElement (breaks with
+        // Shopify editor block-wrappers) or this.$el (points to the child element
+        // when called from a child-element expression, not the component root).
+        const container = slide.closest('.orn-hero__slides');
+        if (!container) return -1;
+        const slides = container.querySelectorAll('.orn-hero__slide');
         return Array.prototype.indexOf.call(slides, slide);
       },
 
