@@ -37,7 +37,7 @@
             :class="{ 'is-active': active === {{ idx }} }"
             :aria-selected="active === {{ idx }}"
             role="tab"
-            aria-label="Ir a slide {{ forloop.index }}"
+            aria-label="{{ 'accessibility.go_to_slide' | t: index: forloop.index }}"
             @click="goTo({{ idx }})"
           >
             <span class="orn-hero__dot-track">

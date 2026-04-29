@@ -48,6 +48,7 @@
     "skip_to_product_info": "Skip to product information",
     "skip_to_results_list": "Skip to results list",
     "skip_to_text": "Skip to content",
+    "go_to_slide": "Go to slide {{ index }}",
     "slide_status": "Slide {{ index }} of {{ length }}",
     "slideshow": "Slideshow",
     "slideshow_next": "Next slide",
