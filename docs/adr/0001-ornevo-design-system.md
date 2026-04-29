@@ -43,10 +43,12 @@ Adoptamos un design system **global sobre Horizon** usando su infraestructura na
 
 2. **Tipografía vía el font picker nativo de Shopify**: `type_heading_font` → `sora_n7`, `type_subheading_font` → `sora_n6`, `type_body_font` → `dm_sans_n4`, `type_accent_font` → `sora_n6`. Shopify sirve ambas desde su CDN (Google Fonts upstream) y `snippets/fonts.liquid` ya genera `<link rel="preload">` para cada una — no requiere código adicional.
 
-3. **Sistema de botones** en `assets/ornevo-buttons.css` con tres variantes declaradas como clases utilitarias (`.ornevo-btn`, `.ornevo-btn--primary|secondary|tertiary`):
+3. **Sistema de botones** en `assets/ornevo-buttons.css` con tres variantes declaradas como clases utilitarias (`.ornevo-btn`, `.ornevo-btn--primary|secondary|tertiary`) y la utilidad de link `.orn-link`:
    - **Primary** — fondo `#0D4F4A`, texto `#FFFFFF`. Hover: fill deslizante en `#103229` desde el borde inferior (avvign style).
    - **Secondary** — transparente, borde 1.5px `#0D4F4A`, texto primario. Hover: fill sólido desde izquierda con inversión de texto a blanco.
    - **Tertiary** — sólo texto primario con underline animado (davidicus #4): la línea aparece desde el centro y se extiende al hover; sin fondo, sin borde.
+
+   - **Link utility** — `.orn-link`: underline animado para links de texto (no CTAs). Usa un wipe direccional — la línea entra desde la izquierda (`transform-origin: left` en hover) y sale hacia la derecha (`transform-origin: right` en el estado base). Se diferencia deliberadamente de `.ornevo-btn--tertiary` (que crece desde el centro). **No se aplica globalmente** — solo a los elementos que explícitamente reciban la clase `orn-link`.
 
 El **acento `#4ec0de`** queda reservado a uso decorativo (líneas de separación, dots del manual, highlights puntuales). No se usa para CTAs ni estados interactivos.
 
@@ -104,9 +106,27 @@ Neutro 05:      #0F1720
 | `type_body_font` | `dm_sans_n4` | Párrafos, UI, botones |
 | `type_accent_font` | `sora_n6` | Labels, chips, pull-quotes |
 
+### Link utility — `.orn-link`
+
+Clase utilitaria de aplicación selectiva. **No se añade globalmente a todos los `<a>`.**
+
+| Propiedad | Valor |
+|-----------|-------|
+| Animación | Wipe direccional: entra por la izquierda, sale por la derecha |
+| Técnica | `::after` con `scaleX(0→1)` y `transform-origin` que cambia entre base (right) y hover (left) |
+| Duración | `280ms cubic-bezier(0.4, 0, 0.2, 1)` |
+| Altura línea | `1px` |
+| Posición | `bottom: -1px` relativo al propio elemento |
+| Contraste | `currentColor` — hereda el color del texto en cualquier scheme |
+| Diferencia con tertiary btn | Tertiary usa `transform-origin: center`; `.orn-link` usa el wipe direccional para que se sienta editorial, no CTA |
+| Reducción de movimiento | `transition-duration: 0ms` cuando `prefers-reduced-motion: reduce` |
+
+Dónde se usa actualmente:
+- `.orn-footer__menu-link` (links de navegación del footer)
+
 ### Archivos a tocar
 - `config/settings_data.json` — reescribir los 7 color schemes (bloques `current` y `presets.Default`) + cambiar los 4 `type_*_font`.
-- `assets/ornevo-buttons.css` — **crear** con `.ornevo-btn--primary|secondary|tertiary` y animaciones.
+- `assets/ornevo-buttons.css` — **crear** con `.ornevo-btn--primary|secondary|tertiary`, animaciones y utilidad `.orn-link`.
 - `layout/theme.liquid` — añadir `{{ 'ornevo-buttons.css' | asset_url | stylesheet_tag }}` en `<head>`.
 
 ### Orden de ejecución
