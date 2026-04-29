@@ -16,6 +16,7 @@
       "blocks": {
         "servicios": {
           "type": "_orn-footer-link-group",
+          "disabled": true,
           "settings": {
             "title": "Services",
             "menu": "footer",
@@ -26,6 +27,7 @@
         },
         "agencia": {
           "type": "_orn-footer-link-group",
+          "disabled": true,
           "settings": {
             "title": "Agencia",
             "menu": "agence",
