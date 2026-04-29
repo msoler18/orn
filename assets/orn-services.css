@@ -165,9 +165,19 @@
   object-fit: contain;
 }
 
-.badge-icon--active { display: none; }
-.orn-services__tab.is-active .badge-icon--default { display: none; }
-.orn-services__tab.is-active .badge-icon--active  { display: block; }
+/* Stack both icons in the same position; swap via opacity (no relayout, no flash) */
+.orn-services__tab-badge:has(.badge-icon--active) {
+  display: inline-grid;
+  place-items: center;
+}
+.orn-services__tab-badge:has(.badge-icon--active) .badge-icon--default,
+.orn-services__tab-badge:has(.badge-icon--active) .badge-icon--active {
+  grid-row: 1;
+  grid-column: 1;
+}
+.badge-icon--active { opacity: 0; }
+.orn-services__tab.is-active .badge-icon--default { opacity: 0; }
+.orn-services__tab.is-active .badge-icon--active  { opacity: 1; }
 
 /* ---------- Panels (stacked grid for smooth transitions) ---------- */
 .orn-services__panels {
