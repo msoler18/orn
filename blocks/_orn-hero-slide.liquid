@@ -136,7 +136,7 @@
           url: block.settings.cta1_url,
           variant: block.settings.cta1_variant,
           new_tab: block.settings.cta1_new_tab,
-          icon: block.settings.cta1_icon_svg,
+          icon: block.settings.cta1_icon,
           extra_class: 'orn-hero__cta orn-hero__cta--1'
         -%}
         {%- render 'orn-hero-cta',
@@ -144,7 +144,7 @@
           url: block.settings.cta2_url,
           variant: block.settings.cta2_variant,
           new_tab: block.settings.cta2_new_tab,
-          icon: block.settings.cta2_icon_svg,
+          icon: block.settings.cta2_icon,
           extra_class: 'orn-hero__cta orn-hero__cta--2'
         -%}
       </div>
@@ -258,9 +258,9 @@
       "label": "URL CTA 1"
     },
     {
-      "type": "textarea",
-      "id": "cta1_icon_svg",
-      "label": "Icono SVG (raw)"
+      "type": "image_picker",
+      "id": "cta1_icon",
+      "label": "Icono CTA 1"
     },
     {
       "type": "select",
@@ -294,9 +294,9 @@
       "label": "URL CTA 2"
     },
     {
-      "type": "textarea",
-      "id": "cta2_icon_svg",
-      "label": "Icono SVG (raw)"
+      "type": "image_picker",
+      "id": "cta2_icon",
+      "label": "Icono CTA 2"
     },
     {
       "type": "select",

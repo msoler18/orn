@@ -5,7 +5,7 @@
     url     — href
     variant — primary | secondary | tertiary
     new_tab — boolean
-    icon    — raw SVG string (optional)
+    icon    — image object from image_picker (optional)
     extra_class — string (optional)
 {%- endcomment -%}
 {%- if text != blank and url != blank -%}
@@ -14,9 +14,11 @@
     href="{{ url }}"
     {% if new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}
   >
-    <span class="ornevo-btn__label">{{ text }}</span>
     {%- if icon != blank -%}
-      <span class="ornevo-btn__icon" aria-hidden="true">{{ icon }}</span>
+      <span class="ornevo-btn__icon" aria-hidden="true">
+        <img src="{{ icon | image_url: width: 64 }}" width="24" height="24" alt="" loading="eager">
+      </span>
     {%- endif -%}
+    <span class="ornevo-btn__label">{{ text }}</span>
   </a>
 {%- endif -%}
