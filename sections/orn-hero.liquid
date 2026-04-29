@@ -8,6 +8,13 @@
 
 {%- if valid_blocks_count > 0 -%}
   {%- assign dot_color = section.settings.dot_color | default: '#ffffff' -%}
+  {%- assign any_has_video = false -%}
+  {%- for block in section.blocks -%}
+    {%- if block.settings.youtube_desktop != blank or block.settings.youtube_mobile != blank -%}
+      {%- assign any_has_video = true -%}
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
   <section
     id="{{ anchor_id }}"
     class="orn-hero color-{{ color_scheme }} gradient"
@@ -51,23 +58,26 @@
       </div>
     {%- endif -%}
 
-    <button
-      type="button"
-      class="orn-hero__play"
-      @click="togglePlay()"
-      :aria-label="playing ? 'Mettre la vidéo en pause' : 'Lancer la lecture'"
-      :aria-pressed="String(playing)"
-    >
-      <span class="orn-hero__play-rings" aria-hidden="true">
-        <span class="orn-hero__play-ring"></span>
-        <span class="orn-hero__play-ring"></span>
-        <span class="orn-hero__play-ring"></span>
-      </span>
-      <span class="orn-hero__play-icon" aria-hidden="true">
-        <svg x-show="!playing" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-        <svg x-show="playing" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6zm8 0h4v14h-4z"/></svg>
-      </span>
-    </button>
+    {%- if any_has_video -%}
+      <button
+        type="button"
+        class="orn-hero__play"
+        x-show="hasActiveVideo"
+        @click="togglePlay()"
+        :aria-label="playing ? 'Pausar video' : 'Reproducir video'"
+        :aria-pressed="String(playing)"
+      >
+        <span class="orn-hero__play-rings" aria-hidden="true">
+          <span class="orn-hero__play-ring"></span>
+          <span class="orn-hero__play-ring"></span>
+          <span class="orn-hero__play-ring"></span>
+        </span>
+        <span class="orn-hero__play-icon" aria-hidden="true">
+          <svg x-show="!playing" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          <svg x-show="playing" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6zm8 0h4v14h-4z"/></svg>
+        </span>
+      </button>
+    {%- endif -%}
   </section>
 {%- endif -%}
 
