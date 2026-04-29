@@ -117,7 +117,7 @@
   line-height: 1.15;
   overflow-wrap: anywhere;
 }
-.orn-footer__tagline-lead p { margin: 0; display: inline; }
+.orn-footer__tagline-lead p { margin: 0; }
 .orn-footer__tagline--right { text-align: right; }
 .orn-footer__tagline--center { text-align: center; }
 .orn-footer__tagline--left { text-align: left; }
@@ -125,7 +125,7 @@
 .orn-footer__pill {
   display: inline-block;
   padding: .15em .6em;
-  margin-inline-start: .25em;
+  margin-top: .4em;
   border-radius: 999px;
   background: var(--orn-footer-pill-bg, #0F1720);
   color: var(--orn-footer-pill-fg, #FFFFFF);
@@ -232,6 +232,7 @@
   .orn-footer__social { justify-content: center; }
   .orn-footer__tagline--right,
   .orn-footer__tagline--left { text-align: center; }
+  .orn-footer__pill { display: block; text-align: center; }
   .orn-footer__legal { justify-content: center; }
   .orn-footer__menus {
     grid-template-columns: repeat(2, minmax(0, 1fr));
