@@ -70,6 +70,7 @@
             "title": "Le digital qui fait grandir votre marque",
             "description": "<p>Sites, e-commerce et stratégie digitale — pour les marques qui veulent grandir</p>",
             "text_color": "#e1edf5",
+            "overlay_opacity": 60,
             "overlay_color_start": "#0f1720",
             "overlay_color_end": "#0d4f4a",
             "youtube_desktop": "",
