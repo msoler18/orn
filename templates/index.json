@@ -97,7 +97,7 @@
       "name": "Ornevo hero",
       "settings": {
         "anchor_id": "#hero",
-        "autoplay_interval": 3500,
+        "autoplay_interval": 4000,
         "aria_label": "Hero carousel",
         "color_scheme": "",
         "dot_color": "#ffffff"
