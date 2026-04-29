@@ -175,17 +175,18 @@
               {%- endif -%}
 
               {%- if panel_image != blank -%}
+                {%- capture panel_image_srcset -%}{{ panel_image | image_url: width: 300, height: 300, crop: 'center' }} 300w, {{ panel_image | image_url: width: 560, height: 560, crop: 'center' }} 560w{%- endcapture -%}
                 <div class="orn-services__panel-image-wrap">
                   {{
                     panel_image
-                    | image_url: width: 600
+                    | image_url: width: 560, height: 560, crop: 'center'
                     | image_tag:
                       class: 'orn-services__panel-image',
                       alt: panel_title,
                       loading: 'lazy',
-                      width: panel_image.width,
-                      height: panel_image.height,
-                      widths: '300, 450, 600',
+                      width: 280,
+                      height: 280,
+                      srcset: panel_image_srcset,
                       sizes: '(min-width: 750px) 280px, 90vw'
                   }}
                 </div>
