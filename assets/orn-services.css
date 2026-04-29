@@ -165,6 +165,10 @@
   object-fit: contain;
 }
 
+.badge-icon--active { display: none; }
+.orn-services__tab.is-active .badge-icon--default { display: none; }
+.orn-services__tab.is-active .badge-icon--active  { display: block; }
+
 /* ---------- Panels (stacked grid for smooth transitions) ---------- */
 .orn-services__panels {
   display: grid;

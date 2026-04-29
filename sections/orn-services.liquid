@@ -107,11 +107,24 @@
           >
             <span class="orn-services__tab-badge" aria-hidden="true">
               {%- if block.settings.tab_icon_number != blank -%}
-                {{
-                  block.settings.tab_icon_number
-                  | image_url: width: 64
-                  | image_tag: alt: '', loading: 'eager'
-                }}
+                {%- if block.settings.tab_icon_number_active != blank -%}
+                  {{
+                    block.settings.tab_icon_number
+                    | image_url: width: 64
+                    | image_tag: alt: '', loading: 'eager', class: 'badge-icon--default'
+                  }}
+                  {{
+                    block.settings.tab_icon_number_active
+                    | image_url: width: 64
+                    | image_tag: alt: '', loading: 'eager', class: 'badge-icon--active'
+                  }}
+                {%- else -%}
+                  {{
+                    block.settings.tab_icon_number
+                    | image_url: width: 64
+                    | image_tag: alt: '', loading: 'eager'
+                  }}
+                {%- endif -%}
               {%- else -%}
                 {{ num }}
               {%- endif -%}
@@ -281,8 +294,14 @@
         {
           "type": "image_picker",
           "id": "tab_icon_number",
-          "label": "Icono SVG del número (opcional)",
-          "info": "SVG con 01/02/03/04. Si está vacío se usa el número de posición."
+          "label": "Icono SVG del número (inactivo)",
+          "info": "SVG oscuro visible sobre fondo claro. Si está vacío se usa el número de posición."
+        },
+        {
+          "type": "image_picker",
+          "id": "tab_icon_number_active",
+          "label": "Icono SVG del número (activo)",
+          "info": "SVG claro/blanco visible sobre fondo verde. Si está vacío se usa el icono base sin intercambio."
         },
 
         { "type": "header", "content": "Panel — encabezado" },
