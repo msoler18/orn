@@ -110,6 +110,8 @@
           "type": "tab",
           "settings": {
             "tab_label_desktop": "Conseil & Stratégie",
+            "tab_icon_number": "shopify://shop_images/01-conseil-inactif.svg",
+            "tab_icon_number_active": "shopify://shop_images/01-conseil-actif.svg",
             "panel_title": "Conseil & Stratégie",
             "panel_heading_level": "h3",
             "panel_description": "<p>Avant de coder ou de designer, on comprend.</p>",
@@ -164,6 +166,8 @@
           "type": "tab",
           "settings": {
             "tab_label_desktop": "",
+            "tab_icon_number": "shopify://shop_images/02-design-inactif.svg",
+            "tab_icon_number_active": "shopify://shop_images/02-design-actif.svg",
             "panel_title": "Design UX/UI",
             "panel_heading_level": "h3",
             "panel_description": "<p><em>Une identité qui convertit autant qu'elle séduit</em></p>",
@@ -214,6 +218,8 @@
           "type": "tab",
           "settings": {
             "tab_label_desktop": "",
+            "tab_icon_number": "shopify://shop_images/03-dev-inactif.svg",
+            "tab_icon_number_active": "shopify://shop_images/03-dev-actif.svg",
             "panel_title": "Développement",
             "panel_heading_level": "h3",
             "panel_description": "<p><em>Du code propre, des intégrations fiables</em></p>",
@@ -264,6 +270,8 @@
           "type": "tab",
           "settings": {
             "tab_label_desktop": "",
+            "tab_icon_number": "shopify://shop_images/04-accompagnement-inactif.svg",
+            "tab_icon_number_active": "shopify://shop_images/04-accompagnement-actif.svg",
             "panel_title": "Croissance & Suivi",
             "panel_heading_level": "h3",
             "panel_description": "<p><em>On ne livre pas - On accompagne dans la durée</em></p>",
@@ -325,6 +333,7 @@
         "cta_url": "#contact",
         "cta_target": "contact_form",
         "cta_variant": "primary",
+        "cta_icon_svg": "shopify://shop_images/02-design-actif.svg",
         "enable_swipe_mobile": "yes",
         "color_scheme": "scheme-1",
         "nav_bg": "#ffffff",
