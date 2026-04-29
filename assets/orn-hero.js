@@ -84,6 +84,18 @@
         return slide ? slide.dataset.hasVideo === 'true' : false;
       },
 
+      // Single source of truth: dot-fill animation must mirror this state so the
+      // visual progress bar can never finish without the slide actually advancing.
+      get isAutoplayRunning() {
+        return (
+          this.playing &&
+          !this._hoverPaused &&
+          this._isVisible &&
+          this.total > 1 &&
+          this.autoplayMs >= 500
+        );
+      },
+
       slideEl(index) {
         return this.$el.querySelectorAll('.orn-hero__slide')[index] || null;
       },

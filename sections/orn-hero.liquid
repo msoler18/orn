@@ -7,9 +7,11 @@
 -%}
 
 {%- if valid_blocks_count > 0 -%}
+  {%- assign dot_color = section.settings.dot_color | default: '#ffffff' -%}
   <section
     id="{{ anchor_id }}"
     class="orn-hero color-{{ color_scheme }} gradient"
+    style="--orn-hero-dot-color: {{ dot_color }};"
     data-section-id="{{ section.id }}"
     aria-roledescription="carousel"
     aria-label="{{ section.settings.aria_label | default: 'Hero carousel' | escape }}"
@@ -41,7 +43,7 @@
             <span class="orn-hero__dot-track">
               <span
                 class="orn-hero__dot-fill"
-                :style="active === {{ idx }} && autoplayMs > 0 && playing ? `animation-duration: ${autoplayMs}ms` : ''"
+                :style="active === {{ idx }} && autoplayMs > 0 ? `animation-duration: ${autoplayMs}ms; animation-play-state: ${isAutoplayRunning ? 'running' : 'paused'}` : ''"
               ></span>
             </span>
           </button>
@@ -105,6 +107,13 @@
       "id": "color_scheme",
       "label": "Esquema de color",
       "default": "scheme-3"
+    },
+    {
+      "type": "color",
+      "id": "dot_color",
+      "label": "Color de los puntos de navegación",
+      "default": "#ffffff",
+      "info": "Color de los indicadores del carrusel. Blanco por defecto (funciona sobre imágenes oscuras). Ajusta si el slide tiene fondo claro."
     }
   ],
   "presets": [
