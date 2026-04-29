@@ -98,6 +98,7 @@
             aria-controls="panel-{{ section.id }}-{{ idx }}"
             aria-label="{{ tab_label | escape }}"
             :aria-selected="active === {{ idx }} ? 'true' : 'false'"
+            tabindex="{% if forloop.first %}0{% else %}-1{% endif %}"
             :tabindex="active === {{ idx }} ? 0 : -1"
             class="orn-services__tab"
             :class="{ 'is-active': active === {{ idx }} }"
