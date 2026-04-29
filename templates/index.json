@@ -333,7 +333,6 @@
         "cta_url": "#contact",
         "cta_target": "contact_form",
         "cta_variant": "primary",
-        "cta_icon_svg": "shopify://shop_images/02-design-actif.svg",
         "enable_swipe_mobile": "yes",
         "color_scheme": "scheme-1",
         "nav_bg": "#ffffff",
