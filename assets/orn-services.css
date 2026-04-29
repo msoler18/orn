@@ -12,7 +12,6 @@
   --orn-services-active-tab-color: var(--color-background, #ffffff);
   --orn-services-inactive-tab-color: inherit;
   --orn-services-flash-color: rgba(78, 192, 222, 0.55);
-  --orn-services-item-bullet-bg: color-mix(in srgb, currentColor 8%, transparent);
   --orn-services-item-icon-color: var(--color-foreground, #0D4F4A);
   --orn-services-progress-active: currentColor;
   --orn-services-progress-inactive: color-mix(in srgb, currentColor 30%, transparent);
@@ -278,12 +277,9 @@
   flex-shrink: 0;
   width: 40px;
   height: 40px;
-  border-radius: 50%;
-  background: var(--orn-services-item-bullet-bg);
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
 }
 
 .orn-services__item-icon img,
