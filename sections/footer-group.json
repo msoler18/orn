@@ -46,7 +46,7 @@
         "cta_band_show": true,
         "cta_band_color_scheme": "scheme-5",
         "cta_band_heading": "<p>Votre prochain projet web commence ici</p>",
-        "cta_band_subtitle": "<p>Un brief, une question, un audit — racontez-nous votre projet et on vous répond sous 4 heures ouvrées</p>",
+        "cta_band_subtitle": "<p>Un brief, une question, un audit — racontez-nous votre projet et on vous répond dans les 24h</p>",
         "cta_band_button_text": "Démarrer un projet",
         "cta_band_button_anchor": "#contact",
         "cta_band_button_variant": "primary",

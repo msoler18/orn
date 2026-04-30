@@ -412,7 +412,7 @@
         "submit_variant": "primary",
         "email_subject_prefix": "Nouveau contact – Ornevo",
         "success_heading": "Merci, message bien reçu.",
-        "success_message": "<p>Nous vous recontactons sous 4h ouvrées.</p>",
+        "success_message": "<p>Nous vous recontactons dans les 24h</p>",
         "error_summary_text": "Vérifiez les champs en rouge ci-dessus.",
         "generic_server_error": "Une erreur est survenue. Réessayez dans un instant"
       }
